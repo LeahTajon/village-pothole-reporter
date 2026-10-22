@@ -31,9 +31,7 @@ resend.api_key = os.getenv("RESEND_API_KEY")
 
 app = Flask(__name__)
 
-app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
-
-if not app.config["SECRET)KEY"]:
+if not app.config["SECRET_KEY"]:
     raise RuntimeError("SECRET_KEY environment variable is required.")
 
 app.config["SQLALCHEMY_DATABASE_URI"] = ("sqlite:///" + os.path.join(app.instance_path, "potholes.db"))
