@@ -80,92 +80,7 @@
             </div>
         </div>
 
-        <!-- Public Demo Dashboard -->
         
-        <!-- Public Demo Dashboard -->
-        <section class="demo-dashboard-section">
-            <div class="demo-dashboard-card">
-                <div class="demo-dashboard-content">
-                    <span class="section-eyebrow">
-                        PORTFOLIO DEMO
-                    </span>
-
-                    <h2>Explore the Admin Dashboard</h2>
-
-                    <p class="demo-dashboard-description">
-                        Curious how pothole reports are managed?
-                        Explore the dashboard, update report statuses,
-                        review affected areas, and track repair progress.
-                    </p>
-
-                    <div class="demo-credentials">
-                        <div class="demo-credential-row">
-                            <span>Demo username</span>
-
-                            <div class="demo-credential-value">
-                                <strong id="demo-username">demo_admin</strong>
-
-                                <button
-                                    type="button"
-                                    class="demo-copy-button"
-                                    id="copy-demo-username"
-                                    aria-label="Copy demo username"
-                                >
-                                    <i class="ti ti-copy"></i>
-                                    Copy
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="demo-credential-row">
-                            <span>Demo password</span>
-
-                            <div class="demo-credential-value">
-                                <strong id="demo-password">
-                                    {{ demo_password }}
-                                </strong>
-
-                                <button
-                                    type="button"
-                                    class="demo-copy-button"
-                                    id="copy-demo-password"
-                                    aria-label="Copy demo password"
-                                >
-                                    <i class="ti ti-copy"></i>
-                                    Copy
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="demo-access-warning">
-                        <i class="ti ti-alert-triangle"></i>
-
-                        <p>
-                            This is a shared demo account. Changes made
-                            to reports and repair details will be visible
-                            to other visitors.
-                        </p>
-                    </div>
-
-                    <a
-                        href="{{ url_for('admin_login') }}"
-                        class="btn btn-primary demo-dashboard-button"
-                    >
-                        <i class="ti ti-layout-dashboard me-2"></i>
-                        Explore Admin Dashboard
-                        <i class="ti ti-arrow-up-right ms-2"></i>
-                    </a>
-                </div>
-
-                <div class="demo-dashboard-visual" aria-hidden="true">
-                    <i class="ti ti-device-desktop-analytics"></i>
-                    <span>REPORT MANAGEMENT</span>
-                    <strong>From submission to repair.</strong>
-                </div>
-            </div>
-        </section>
-
 
         <!-- Flash Messages 
         {% with messages = get_flashed_messages(with_categories=true) %}
@@ -378,9 +293,98 @@
             </form>
         </div>
 
+        <!-- Public Demo Dashboard -->
+        <section class="demo-dashboard-section">
+            <div class="demo-dashboard-card">
+                <div class="demo-dashboard-content">
+                    <span class="section-eyebrow">
+                        PORTFOLIO DEMO
+                    </span>
+
+                    <h2>Explore the Admin Dashboard</h2>
+
+                    <p class="demo-dashboard-description">
+                        Curious how pothole reports are managed?
+                        Explore the dashboard, update report statuses,
+                        review affected areas, and track repair progress.
+                    </p>
+
+                    <div class="demo-credentials">
+                        <div class="demo-credential-row">
+                            <span>Demo username</span>
+
+                            <div class="demo-credential-value">
+                                <strong id="demo-username">demo_admin</strong>
+
+                                <button
+                                    type="button"
+                                    class="demo-copy-button"
+                                    id="copy-demo-username"
+                                    aria-label="Copy demo username"
+                                >
+                                    <i class="ti ti-copy"></i>
+                                    Copy
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="demo-credential-row">
+                            <span>Demo password</span>
+
+                            <div class="demo-credential-value">
+                                <strong id="demo-password">
+                                    {{ demo_password }}
+                                </strong>
+
+                                <button
+                                    type="button"
+                                    class="demo-copy-button"
+                                    id="copy-demo-password"
+                                    aria-label="Copy demo password"
+                                >
+                                    <i class="ti ti-copy"></i>
+                                    Copy
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="demo-access-warning">
+                        <i class="ti ti-alert-triangle"></i>
+
+                        <p>
+                            This is a shared demo account. Changes made
+                            to reports and repair details will be visible
+                            to other visitors.
+                        </p>
+                    </div>
+
+                    <a
+                        href="{{ url_for('admin_login') }}"
+                        class="btn btn-primary demo-dashboard-button"
+                    >
+                        <i class="ti ti-layout-dashboard me-2"></i>
+                        Explore Admin Dashboard
+                        <i class="ti ti-arrow-up-right ms-2"></i>
+                    </a>
+                </div>
+
+                <div class="demo-dashboard-visual" aria-hidden="true">
+                    <i class="ti ti-device-desktop-analytics"></i>
+                    <span>REPORT MANAGEMENT</span>
+                    <strong>From submission to repair.</strong>
+                </div>
+            </div>
+    </section>
+
     </div>
 
+    
+
+
 </section>
+
+    
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
