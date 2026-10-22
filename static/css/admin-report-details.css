@@ -1,0 +1,943 @@
+
+/* =========================================
+   ADMIN REPORT DETAILS
+========================================= */
+
+.admin-report-page {
+    --admin-accent: #7866d9;
+    --admin-accent-dark: #6250c1;
+    --admin-text: #292b3a;
+    --admin-muted: #777b8e;
+    --admin-border: #e9eaf1;
+    --admin-surface: #ffffff;
+    --admin-background: #f6f7fb;
+
+    max-width: 1440px;
+    min-height: 80vh;
+    margin: 0 auto;
+    padding: 38px 32px 64px;
+    color: var(--admin-text);
+    background: var(--admin-background);
+}
+
+/* =========================================
+   PAGE HEADER
+========================================= */
+
+.admin-report-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 28px;
+}
+
+.admin-back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 24px;
+    color: var(--admin-muted);
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.admin-back-link:hover {
+    color: var(--admin-accent);
+}
+
+.admin-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 9px;
+    color: var(--admin-accent);
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+}
+
+.admin-report-heading h1 {
+    margin: 0;
+    font-size: clamp(1.8rem, 3vw, 2.35rem);
+    font-weight: 750;
+    letter-spacing: -0.045em;
+}
+
+.admin-heading-description {
+    margin: 9px 0 0;
+    color: var(--admin-muted);
+    font-size: 0.96rem;
+    line-height: 1.6;
+}
+
+/* =========================================
+   BUTTONS
+========================================= */
+
+.admin-secondary-button,
+.admin-primary-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    min-height: 44px;
+    padding: 11px 17px;
+    border-radius: 11px;
+    font-size: 0.9rem;
+    font-weight: 650;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.admin-secondary-button {
+    color: #55566b;
+    background: #ffffff;
+    border: 1px solid var(--admin-border);
+}
+
+.admin-secondary-button:hover {
+    color: var(--admin-accent-dark);
+    background: #f8f6ff;
+    border-color: #d8d1fa;
+}
+
+.admin-primary-button {
+    width: 100%;
+    color: #ffffff;
+    background: var(--admin-accent);
+    border: 1px solid var(--admin-accent);
+}
+
+.admin-primary-button:hover {
+    color: #ffffff;
+    background: var(--admin-accent-dark);
+    border-color: var(--admin-accent-dark);
+    transform: translateY(-1px);
+}
+
+.admin-primary-button:focus-visible,
+.admin-secondary-button:focus-visible,
+.admin-back-link:focus-visible {
+    outline: 3px solid rgb(120 102 217 / 25%);
+    outline-offset: 3px;
+}
+
+/* =========================================
+   REPORT SUMMARY
+========================================= */
+
+.report-summary {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0;
+    margin-bottom: 24px;
+    overflow: hidden;
+    background: var(--admin-surface);
+    border: 1px solid var(--admin-border);
+    border-radius: 17px;
+    box-shadow: 0 3px 12px rgb(35 38 70 / 3%);
+}
+
+.summary-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    min-width: 0;
+    padding: 23px 24px;
+}
+
+.summary-item + .summary-item {
+    border-left: 1px solid var(--admin-border);
+}
+
+.summary-label {
+    color: var(--admin-muted);
+    font-size: 0.77rem;
+    font-weight: 600;
+    letter-spacing: 0.025em;
+}
+
+.summary-item > strong,
+.location-details strong,
+.repair-completion strong {
+    font-size: 0.96rem;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+.summary-subtext {
+    margin-top: -5px;
+    color: var(--admin-muted);
+    font-size: 0.8rem;
+}
+
+/* Severity and status badges */
+
+.severity-badge,
+.report-status {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    max-width: 100%;
+    padding: 6px 10px;
+    border-radius: 7px;
+    font-size: 0.76rem;
+    font-weight: 700;
+    line-height: 1.35;
+}
+
+.severity-low {
+    color: #287b57;
+    background: #e8f7ef;
+}
+
+.severity-medium {
+    color: #95641a;
+    background: #fff4da;
+}
+
+.severity-high {
+    color: #b83e47;
+    background: #ffeaec;
+}
+
+.status-submitted {
+    color: #4263a4;
+    background: #eaf1ff;
+}
+
+.status-under-review {
+    color: #8658b5;
+    background: #f3eaff;
+}
+
+.status-in-progress {
+    color: #946319;
+    background: #fff3d8;
+}
+
+.status-repaired {
+    color: #277b56;
+    background: #e5f6ec;
+}
+
+.priority-resolved {
+    background-color: #e6f4ea;
+    color: #26d1dd;
+}
+
+/* =========================================
+   MAIN LAYOUT
+========================================= */
+
+.admin-report-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.65fr) minmax(290px, 0.85fr);
+    align-items: start;
+    gap: 24px;
+}
+
+.admin-report-main,
+.admin-report-sidebar {
+    display: grid;
+    gap: 24px;
+    min-width: 0;
+}
+
+/* =========================================
+   PANELS AND HEADINGS
+========================================= */
+
+.admin-panel {
+    min-width: 0;
+    padding: 25px;
+    background: var(--admin-surface);
+    border: 1px solid var(--admin-border);
+    border-radius: 17px;
+    box-shadow: 0 3px 12px rgb(35 38 70 / 3%);
+}
+
+.panel-heading {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    margin-bottom: 23px;
+}
+
+.panel-icon {
+    display: grid;
+    flex: 0 0 43px;
+    width: 43px;
+    height: 43px;
+    place-items: center;
+    color: var(--admin-accent);
+    background: #f0edff;
+    border-radius: 12px;
+    font-size: 1.3rem;
+}
+
+.panel-heading h2 {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 750;
+    letter-spacing: -0.02em;
+}
+
+.panel-heading p {
+    margin: 5px 0 0;
+    color: var(--admin-muted);
+    font-size: 0.83rem;
+    line-height: 1.5;
+}
+
+/* =========================================
+   REPORT DESCRIPTION AND PHOTOS
+========================================= */
+
+.report-description {
+    color: #505366;
+    font-size: 0.96rem;
+    line-height: 1.85;
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+}
+
+.photo-section {
+    margin-top: 25px;
+}
+
+.photo-section h3 {
+    margin-bottom: 12px;
+    font-size: 0.88rem;
+    font-weight: 700;
+}
+
+.report-photo-link {
+    display: block;
+    width: fit-content;
+    max-width: 100%;
+    overflow: hidden;
+    background: #f0f1f6;
+    border: 1px solid var(--admin-border);
+    border-radius: 13px;
+    text-decoration: none;
+}
+
+.report-photo {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    max-height: 420px;
+    object-fit: contain;
+}
+
+.photo-open-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 13px;
+    color: #626579;
+    background: #ffffff;
+    border-top: 1px solid var(--admin-border);
+    font-size: 0.8rem;
+}
+
+.photo-empty {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 17px;
+    color: var(--admin-muted);
+    background: #fafaff;
+    border: 1px dashed #dfe0eb;
+    border-radius: 11px;
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
+
+.photo-empty i {
+    flex-shrink: 0;
+    color: #9990cf;
+    font-size: 1.25rem;
+}
+
+/* =========================================
+   REPORTED LOCATION MAP
+========================================= */
+
+.admin-report-map {
+    position: relative;
+    z-index: 0;
+    width: 100%;
+    height: 310px;
+    overflow: hidden;
+    background: #eceef4;
+    border: 1px solid var(--admin-border);
+    border-radius: 13px;
+}
+
+.location-details {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 18px;
+}
+
+.location-details > div {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    min-width: 0;
+    padding: 14px;
+    background: #f8f8fc;
+    border-radius: 10px;
+}
+
+.location-details strong {
+    font-size: 0.83rem;
+}
+
+.admin-map-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 17px;
+    color: var(--admin-accent-dark);
+    font-size: 0.88rem;
+    font-weight: 650;
+    text-decoration: none;
+}
+
+.admin-map-link:hover {
+    text-decoration: underline;
+}
+
+/* =========================================
+   REPAIR INFORMATION
+========================================= */
+
+.repair-notes {
+    margin-top: 25px;
+}
+
+.repair-notes p {
+    margin: 9px 0 0;
+    color: #505366;
+    font-size: 0.9rem;
+    line-height: 1.75;
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+}
+
+.repair-completion {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid var(--admin-border);
+}
+
+/* =========================================
+   STATUS MANAGEMENT FORM
+========================================= */
+
+.status-management-panel {
+    position: sticky;
+    top: 24px;
+}
+
+.admin-status-form {
+    display: grid;
+    gap: 19px;
+}
+
+.admin-form-field {
+    display: grid;
+    gap: 8px;
+    min-width: 0;
+}
+
+.admin-form-field label {
+    color: #46485c;
+    font-size: 0.83rem;
+    font-weight: 700;
+}
+
+.admin-form-control {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    padding: 11px 12px;
+    color: var(--admin-text);
+    background: #ffffff;
+    border: 1px solid #dfe1eb;
+    border-radius: 10px;
+    font: inherit;
+    font-size: 0.88rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.admin-form-control:focus {
+    outline: none;
+    border-color: #a69ae9;
+    box-shadow: 0 0 0 3px rgb(120 102 217 / 12%);
+}
+
+.admin-file-input {
+    padding: 9px;
+    font-size: 0.8rem;
+}
+
+.admin-file-input::file-selector-button {
+    margin-right: 9px;
+    padding: 7px 10px;
+    color: #5f50a9;
+    background: #f0edff;
+    border: 0;
+    border-radius: 7px;
+    cursor: pointer;
+}
+
+.admin-form-field small {
+    color: var(--admin-muted);
+    font-size: 0.76rem;
+    line-height: 1.55;
+}
+
+.admin-repair-fields {
+    display: grid;
+    gap: 18px;
+    padding-top: 18px;
+    border-top: 1px solid var(--admin-border);
+}
+
+.admin-repair-fields[hidden] {
+    display: none;
+}
+
+/* =========================================
+   HELPFUL TIP
+========================================= */
+
+.admin-tip {
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+    padding: 17px;
+    color: #676184;
+    background: #f0edff;
+    border: 1px solid #e3ddff;
+    border-radius: 13px;
+}
+
+.admin-tip > i {
+    flex-shrink: 0;
+    margin-top: 2px;
+    color: var(--admin-accent);
+    font-size: 1.1rem;
+}
+
+.admin-tip p {
+    margin: 0;
+    font-size: 0.81rem;
+    line-height: 1.7;
+}
+
+/* Saved street name and address */
+.saved-location-details {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 18px;
+}
+
+.saved-location-item {
+    padding: 16px;
+    background: #f7f7fc;
+    border: 1px solid #e8e7f3;
+    border-radius: 14px;
+    min-width: 0;
+}
+
+.saved-location-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    color: #77758c;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.saved-location-label i {
+    color: #7c5cff;
+    font-size: 1.1rem;
+}
+
+.saved-location-item p {
+    margin: 0;
+    color: #29283a;
+    font-weight: 500;
+    overflow-wrap: anywhere;
+}
+
+
+/* Delete report */
+.delete-report-form {
+    margin-top: 12px;
+}
+
+.admin-delete-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #f0caca;
+    border-radius: 10px;
+    background: #fff;
+    color: #c03939;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease,
+                border-color 0.2s ease;
+}
+
+.admin-delete-button:hover {
+    background: #fff1f1;
+    border-color: #dc7777;
+}
+
+.admin-delete-button:focus-visible {
+    outline: 3px solid #f2bcbc;
+    outline-offset: 2px;
+}
+
+
+/* Delete confirmation modal */
+.delete-report-form {
+    margin-top: 12px;
+}
+
+.admin-delete-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #f0caca;
+    border-radius: 10px;
+    background: #fff;
+    color: #c03939;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.admin-delete-button:hover {
+    background: #fff1f1;
+    border-color: #dc7777;
+}
+
+/* Darkened page background */
+.delete-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(25, 25, 40, 0.48);
+    backdrop-filter: blur(3px);
+}
+
+.delete-modal-overlay.is-open {
+    display: flex;
+}
+
+/* Modal window */
+.delete-modal {
+    width: 100%;
+    max-width: 420px;
+    padding: 32px;
+    border: 1px solid #eeeeF5;
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 20px 60px rgba(25, 25, 40, 0.2);
+    text-align: center;
+    animation: deleteModalIn 0.18s ease-out;
+}
+
+.delete-modal-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 58px;
+    height: 58px;
+    margin: 0 auto 18px;
+    border-radius: 50%;
+    background: #fff0f0;
+    color: #c03939;
+    font-size: 27px;
+}
+
+.delete-modal h2 {
+    margin: 0 0 12px;
+    color: #252538;
+    font-size: 21px;
+    font-weight: 700;
+}
+
+.delete-modal p {
+    margin: 0;
+    color: #77778a;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.delete-modal-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 28px;
+    align-items: stretch;
+}
+
+.delete-modal-actions form {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+}
+
+.delete-cancel-button,
+.delete-confirm-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex: 1;
+    width: 100%;
+    min-width: 0;
+    min-height: 44px;
+    padding: 11px 10px;
+    box-sizing: border-box;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.delete-cancel-button {
+    border: 1px solid #e3e3ec;
+    background: #fff;
+    color: #55556b;
+}
+
+.delete-cancel-button:hover {
+    background: #f6f6fa;
+}
+
+.delete-confirm-button {
+    border: 1px solid #c03939;
+    background: #c03939;
+    color: #fff;
+}
+
+.delete-confirm-button:hover {
+    border-color: #a52d2d;
+    background: #a52d2d;
+}
+
+.delete-cancel-button:focus-visible,
+.delete-confirm-button:focus-visible,
+.admin-delete-button:focus-visible {
+    outline: 3px solid #c7baff;
+    outline-offset: 3px;
+}
+
+
+.delete-modal-actions {
+    display: flex;
+    align-items: stretch;
+    gap: 12px;
+}
+
+.delete-modal-actions form {
+    display: flex;
+    flex: 1;
+    margin: 0;
+    padding: 0;
+}
+
+.delete-modal-actions .delete-cancel-button,
+.delete-modal-actions .delete-confirm-button {
+    height: 46px;
+    min-height: 46px;
+    max-height: 46px;
+    margin: 0;
+    padding: 0 12px;
+    box-sizing: border-box;
+    line-height: 1;
+    align-self: stretch;
+}
+
+.delete-modal-actions .delete-cancel-button {
+    flex: 1;
+}
+
+.delete-modal-actions .delete-confirm-button {
+    flex: 1;
+}
+
+
+@keyframes deleteModalIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@media (max-width: 480px) {
+    .delete-modal {
+        padding: 26px 20px;
+    }
+
+    .delete-modal-actions {
+        flex-direction: row;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .delete-modal {
+        animation: none;
+    }
+}
+
+
+@media (max-width: 600px) {
+    .saved-location-details {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* =========================================
+   TABLET RESPONSIVENESS
+========================================= */
+
+@media (max-width: 1000px) {
+    .admin-report-page {
+        padding: 30px 22px 48px;
+    }
+
+    .admin-report-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .admin-report-sidebar {
+        order: -1;
+    }
+
+    .status-management-panel {
+        position: static;
+    }
+
+    .report-summary {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .summary-item + .summary-item {
+        border-left: 0;
+    }
+
+    .summary-item:nth-child(even) {
+        border-left: 1px solid var(--admin-border);
+    }
+
+    .summary-item:nth-child(n + 3) {
+        border-top: 1px solid var(--admin-border);
+    }
+}
+
+/* =========================================
+   MOBILE RESPONSIVENESS
+========================================= */
+
+@media (max-width: 600px) {
+    .admin-report-page {
+        padding: 24px 15px 38px;
+    }
+
+    .admin-report-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 18px;
+    }
+
+    .admin-back-link {
+        margin-bottom: 19px;
+    }
+
+    .admin-secondary-button {
+        width: 100%;
+    }
+
+    .summary-item {
+        padding: 17px 14px;
+    }
+
+    .admin-panel {
+        padding: 19px 16px;
+        border-radius: 14px;
+    }
+
+    .panel-heading {
+        align-items: flex-start;
+        gap: 11px;
+    }
+
+    .panel-icon {
+        flex-basis: 38px;
+        width: 38px;
+        height: 38px;
+        font-size: 1.15rem;
+    }
+
+    .admin-report-map {
+        height: 250px;
+    }
+
+    .location-details {
+        gap: 9px;
+    }
+
+    .location-details > div {
+        padding: 11px;
+    }
+
+    .report-photo {
+        max-height: 320px;
+    }
+}

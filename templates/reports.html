@@ -1,0 +1,915 @@
+{% extends "base.html" %} {% block title %} Pothole Reports | Village Pothole
+Reporter {% endblock %} {% block extra_css %}
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/reports.css') }}"
+/>
+{% endblock %} {% block content %}
+<div class="reports-page">
+  <!-- Page Header -->
+  <div class="reports-header">
+    <div>
+      <p class="page-eyebrow">
+        <i class="bi bi-geo-alt"></i>
+        Community Reports
+      </p>
+
+      <h1>Pothole Reports</h1>
+      <p class="reports-subtitle">
+        View pothole reports submitted by the community and explore their
+        locations on the map.
+      </p>
+    </div>
+
+    <!--
+        <a href="{{ url_for('index') }}#report" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i>
+            Report a Pothole
+        </a>
+        -->
+  </div>
+
+  <!-- Interactive Map -->
+  <section class="reports-map-section">
+    <div class="reports-map-heading">
+      <div>
+        <h2>Reported Locations</h2>
+        <p>
+          Select a map marker to view its report details. Use the layer control
+          to switch map styles.
+        </p>
+      </div>
+
+      <span class="map-label">
+        <i class="bi bi-map"></i>
+        Interactive Map
+      </span>
+    </div>
+
+    <!-- Map Location Search -->
+    <form id="reports-search-form" class="reports-search-form">
+      <label for="reports-search-input">
+        <i class="bi bi-search"></i>
+        Find a street or place in Dededo
+      </label>
+
+      <div class="reports-search-controls">
+        <input
+          type="search"
+          id="reports-search-input"
+          name="location"
+          placeholder="Search streets, schools, landmarks..."
+          autocomplete="off"
+          required
+        />
+
+        <button type="submit" id="reports-search-button">
+          <i class="bi bi-search"></i>
+          <span>Search</span>
+        </button>
+      </div>
+
+      <!-- Autocomplete -->
+      <div
+        id="reports-search-suggestions"
+        class="place-suggestions"
+        role="listbox"
+        aria-label="Matching place"
+        hidden
+      ></div>
+
+      <p
+        id="reports-search-message"
+        class="reports-search-message"
+        role="status"
+        aria-live="polite"
+      ></p>
+    </form>
+
+    <div
+      id="reports-map"
+      data-reports='[
+                {% for pothole in map_potholes %}
+                {
+                    "id": {{ pothole.id | tojson }},
+                    "latitude": {{ pothole.latitude | tojson }},
+                    "longitude": {{ pothole.longitude | tojson }},
+                    "description": {{ pothole.description | tojson }},
+                    "severity": {{ pothole.severity | tojson }},
+                    "status": {{ pothole.status | tojson }},
+                    "photo": {{ pothole.photo | tojson }},
+                    "street_name": {{ pothole.street_name | tojson }},
+                    "location_address": {{ pothole.location_address | tojson }}
+                  
+                }{% if not loop.last %},{% endif %}
+                {% endfor %}
+            ]'
+      role="application"
+      aria-label="Interactive map showing reported pothole locations"
+    ></div>
+
+    <div class="map-legend">
+      <span>
+        <i class="legend-dot legend-high"></i>
+        High Severity
+      </span>
+
+      <span>
+        <i class="legend-dot legend-medium"></i>
+        Medium Severity
+      </span>
+
+      <span>
+        <i class="legend-dot legend-low"></i>
+        Low Severity
+      </span>
+
+      <span>
+        <i class="legend-dot legend-repaired"></i>
+        Repaired
+      </span>
+    </div>
+  </section>
+
+  <!-- Public Report -->
+  <section class="report-filters">
+    <div class="report-filters-heading">
+      <h2>Filter Reports</h2>
+      <p>Find reports by severity, status, or street.</p>
+    </div>
+
+    <form 
+      method="GET"
+      action="{{ url_for('reports', _anchor='report-results') }}"
+      class="report-filters-format">
+
+      <!-- Severity -->
+      <div class="filter-group">
+        <label for="severity">Severity</label>
+          <select name="severity" id="severity">
+            <option value="">All Severities</option>
+            {% for option in severity_options %}
+                <option value="{{ option }}"
+                    {% if selected_severity == option %}selected{% endif %}>
+                    {{ option }}
+                </option>
+            {% endfor %}
+        </select>
+      </div>
+
+      <!-- Status -->
+      <div class="filter-group">
+        <label for="status">Status</label>
+        <select name="status" id="status">
+          <option value="">All Statuses</option>
+          {% for option in status_options %}
+            <option
+              value="{{ option }}"
+              {% if selected_status == option %}selected{% endif %}
+            >
+              {{ option }}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Street -->
+      <div class="filter-group">
+        <label for="street">Street</label>
+        <select name="street" id="street">
+          <option value="">All Streets</option>
+          {% for option in street_options %}
+            <option 
+              value="{{ option }}"
+              {% if selected_street == option %}
+              selected
+              {% endif %}
+              >
+              {{ option }}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="filter-actions">
+        <button
+          type="submit"
+          class="filter-apply-button">
+          Apply Filters 
+        </button>
+
+        <a 
+          href="{{ url_for('reports')}}"
+          class="filter-reset-button">
+          Reset
+        </a>
+      </div>
+    </form>
+  </section>
+
+  <!-- Report Count -->
+  <div class="reports-list-heading" id="report-results">
+    <div>
+      <h2>All Reports</h2>
+      <p>Review potholes reported by community members.</p>
+    </div>
+
+    <span class="reports-count">
+      {{ pagination.total }} Report{% if pagination.total != 1%}s{% endif %}
+    </span>
+  </div>
+
+  <!-- Report Cards -->
+  {% if potholes %}
+  <div class="reports-grid">
+    {% for pothole in potholes %}
+    <article class="report-card report-card-clickable">
+      <a
+        href="{{ url_for('report_details', pothole_id=pothole.id) }}"
+        class="report-card-overlay"
+        aria-label="View details for report #{{ pothole.id }}"
+      ></a>
+
+      {% if pothole.photo %}
+      <div class="report-photo">
+        <img
+          src="{{ url_for('static', filename='uploads/' ~ pothole.photo) }}"
+          alt="Photo of pothole report #{{ pothole.id }}"
+          loading="lazy"
+        />
+      </div>
+      {% endif %}
+
+      <div class="report-card-body">
+        <div class="report-card-top">
+          <span class="report-id"> Report #{{ pothole.id }} </span>
+
+          {% if pothole.status == "Repaired" %}
+          <span class="severity-badge status-repaired">
+            <i class="bi bi-check-circle-fill"></i>
+            Repaired
+          </span>
+          {% else %}
+          <span class="severity-badge severity-{{ pothole.severity|lower }}">
+            {{ pothole.severity }}
+          </span>
+          {% endif %}
+        </div>
+
+        {% if pothole.street_name or pothole.location_address %}
+        <div class="report-location">
+          <i class="bi bi-geo-alt-fill"></i>
+          <div>
+            <strong> {{ pothole.street_name or "Reported Location" }} </strong>
+
+            {% if pothole.location_address %}
+            <p>{{ pothole.location_address }}</p>
+            {% endif %}
+          </div>
+        </div>
+        {% endif %}
+
+        <p class="report-description">{{ pothole.description }}</p>
+
+        <div class="report-meta">
+          <div>
+            <i class="bi bi-clipboard-check"></i>
+            <span>Status:</span>
+            <strong>{{ pothole.status }}</strong>
+          </div>
+
+          <div>
+            <i class="bi bi-geo-alt"></i>
+            <span>Coordinates:</span>
+            <strong>
+              {{ "%.5f"|format(pothole.latitude) }}, {{
+              "%.5f"|format(pothole.longitude) }}
+            </strong>
+          </div>
+
+          <div>
+            <i class="bi bi-calendar3"></i>
+            <span>Reported:</span>
+            <strong>
+              {% if pothole.created_at_guam %} {{
+              pothole.created_at_guam.strftime("%b %d, %Y at %I:%M %p") }} {%
+              else %} Date unavailable {% endif %}
+            </strong>
+          </div>
+        </div>
+
+        <a
+          href="https://www.google.com/maps?q={{ pothole.latitude }},{{ pothole.longitude }}"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="report-map-link"
+        >
+          <i class="bi bi-box-arrow-up-right"></i>
+          Open Location in Google Maps
+        </a>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+
+  {% else %}
+  <div class="reports-empty-state">
+    <div class="empty-state-icon">
+      <i class="bi bi-geo"></i>
+    </div>
+
+    <h3>No Pothole Reports Yet</h3>
+
+    <p>
+      There are no reports to display yet. Help your community by reporting a
+      pothole.
+    </p>
+
+    <a href="{{ url_for('index') }}#report" class="btn btn-primary">
+      <i class="bi bi-plus-circle"></i>
+      Submit First Report
+    </a>
+  </div>
+  {% endif %}
+
+  <!-- Pagination -->
+  {% if pagination and pagination.pages > 1 %}
+  <nav class="reports-pagination" aria-label="Community reports pages">
+    <div class="pagination-info">
+      Showing {{ pagination.first }}-{{ pagination.last }} of {{
+      pagination.total }} reports
+    </div>
+
+    <div class="pagination-controls">
+      {% if pagination.has_prev %}
+      <a
+        href="{{ url_for(
+          'reports', 
+          page=pagination.prev_num,
+          severity=selected_severity,
+          status=selected_status,
+          street=selected_street
+          )}}"
+        class="pagination-btn pagination-arrow"
+        aria-label="Previous page"
+      >
+        <i class="ti ti-chevron-left"></i>
+        <span>Previous</span>
+      </a>
+      {% else %}
+      <span class="pagination-btn pagination-arrow disabled">
+        <i class="ti ti-chevron-left"></i>
+        Previous
+      </span>
+      {% endif %} 
+      {% for page_num in pagination.iter_pages( left_edge=1,
+      right_edge=1, left_current=1, right_current=1 )%} 
+        {% if page_num %} 
+          {% if page_num == pagination.page %}
+      <span class="pagination-btn active" aria-current="page">
+        {{ page_num }}
+      </span>
+      {% else %}
+      <a 
+        href="{{ url_for(
+          'reports', 
+          page=page_num,
+          severity=selected_severity,
+          status=selected_status,
+          street=selected_street
+          ) }}" 
+        class="pagination-btn"
+      >
+        {{ page_num }}
+      </a>
+      {% endif %} {% else %}
+      <span class="pagination-ellipsis">…</span>
+      {% endif %} {% endfor %} {% if pagination.has_next %}
+      <a
+        href="{{ url_for(
+          'reports', 
+          page=pagination.next_num,
+          severity=selected_severity,
+          status=selected_status,
+          street=selected_street) }}"
+        class="pagination-btn pagination-arrow"
+        aria-label="Next page"
+      >
+        <span>Next</span>
+        <i class="ti ti-chevron-right"></i>
+      </a>
+      {% else %}
+      <span class="pagination-btn pagination-arrow disabled">
+        <span>Next</span>
+        <i class="ti ti-chevron-right"></i>
+      </span>
+      {% endif %}
+    </div>
+  </nav>
+  {% endif %}
+  <!--End: Pagination -->
+</div>
+{% endblock %} {% block extra_js %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const mapElement = document.getElementById("reports-map");
+
+    if (!mapElement) {
+      return;
+    }
+
+    let reports = [];
+
+    try {
+      reports = JSON.parse(mapElement.dataset.reports || "[]");
+    } catch (error) {
+      console.error("Unable to load pothole reports:", error);
+    }
+
+    // Street map layer
+    const streetLayer = L.tileLayer(
+      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+      {
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        maxZoom: 19,
+      },
+    );
+
+    // Satellite imagery layer
+    const satelliteLayer = L.tileLayer(
+      "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+      {
+        attribution: "Tiles &copy; Esri and its imagery providers",
+        maxZoom: 19,
+      },
+    );
+
+    // Initialize map with street view by default
+    const map = L.map("reports-map", {
+      center: [13.5178, 144.8381],
+      zoom: 13,
+      layers: [streetLayer],
+    });
+
+    // Map style switcher
+    L.control
+      .layers(
+        {
+          "Street Map": streetLayer,
+          Satellite: satelliteLayer,
+        },
+        null,
+        {
+          collapsed: false,
+          position: "topright",
+        },
+      )
+      .addTo(map);
+
+    // Search for streets, schools, landmarks, and buildings
+    const searchForm = document.getElementById("reports-search-form");
+    const searchInput = document.getElementById("reports-search-input");
+    const searchButton = document.getElementById("reports-search-button");
+    const searchMessage = document.getElementById("reports-search-message");
+
+    if (searchForm && searchInput && searchButton && searchMessage) {
+      searchForm.addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        const query = searchInput.value.trim();
+
+        if (!query) {
+          searchMessage.textContent = "Please enter a street or place.";
+          return;
+        }
+
+        searchButton.disabled = true;
+        searchMessage.textContent = "Searching for streets and places...";
+
+        try {
+          const params = new URLSearchParams({
+            q: `${query}, Dededo, Guam`,
+            format: "jsonv2",
+            limit: "10",
+            addressdetails: "1",
+            bounded: "1",
+            viewbox: "144.76,13.59,144.92,13.45",
+          });
+
+          const response = await fetch(
+            `https://nominatim.openstreetmap.org/search?${params.toString()}`,
+            {
+              headers: {
+                Accept: "application/json",
+              },
+            },
+          );
+
+          if (!response.ok) {
+            throw new Error("Location search is unavailable.");
+          }
+
+          const results = await response.json();
+
+          // Keep results within the approximate Dededo search area.
+          const result = results.find(function (item) {
+            const lat = Number(item.lat);
+            const lng = Number(item.lon);
+
+            return (
+              Number.isFinite(lat) &&
+              Number.isFinite(lng) &&
+              lat >= 13.45 &&
+              lat <= 13.59 &&
+              lng >= 144.76 &&
+              lng <= 144.92
+            );
+          });
+
+          if (!result) {
+            searchMessage.textContent =
+              "No matching place found in the Dededo search area. Try another name.";
+
+            return;
+          }
+
+          const latitude = Number(result.lat);
+          const longitude = Number(result.lon);
+
+          // Move the existing map. Do not create or remove markers.
+          map.setView([latitude, longitude], 17, {
+            animate: true,
+          });
+
+          searchMessage.textContent = "Map moved to: " + result.display_name;
+        } catch (error) {
+          console.error("Reports map search error:", error);
+
+          searchMessage.textContent =
+            "Unable to search right now. Please try again.";
+        } finally {
+          searchButton.disabled = false;
+        }
+      });
+    }
+
+    // Severity colors
+    function getMarkerStyle(severity, status) {
+      const normalizedSeverity = String(severity || "")
+        .trim()
+        .toLowerCase();
+
+      const normalizedStatus = String(status || "")
+        .trim()
+        .toLowerCase();
+
+      // Repaired reports always use green
+      if (normalizedStatus === "repaired") {
+        return {
+          color: "#16a34a",
+          icon: "check",
+        };
+      }
+
+      // Unrepaired reports use their severity color.
+      if (normalizedSeverity === "high") {
+        return {
+          color: "#dc2626",
+          icon: "warning",
+        };
+      }
+
+      if (normalizedSeverity === "medium") {
+        return {
+          color: "#d97706",
+          icon: "warning",
+        };
+      }
+
+      // Low severity is blue, not green
+      return {
+        color: "#2563eb",
+        icon: "warning",
+      };
+    }
+
+    // Build a popup safely using DOM elements
+
+    function createPopup(report) {
+      const container = document.createElement("div");
+      container.className = "map-popup";
+
+      // Report title
+      const title = document.createElement("strong");
+      title.textContent = "Report #" + report.id;
+      container.appendChild(title);
+
+      // Inline SVG icons
+      const icons = {
+        warning: `
+                <svg viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round"
+                    aria-hidden="true">
+                    <path d="M10.3 3.9 2.5 17.4A2 2 0 0 0
+                            4.2 20.4h15.6a2 2 0 0 0
+                            1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/>
+                    <path d="M12 9v4"/>
+                    <path d="M12 17h.01"/>
+                </svg>`,
+        submitted: `
+                <svg viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round"
+                    aria-hidden="true">
+                    <circle cx="12" cy="12" r="9"/>
+                    <path d="M12 7v5l3 2"/>
+                </svg>`,
+        review: `
+                <svg viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round"
+                    aria-hidden="true">
+                    <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/>
+                    <circle cx="12" cy="12" r="3"/>
+                </svg>`,
+        progress: `
+                <svg viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round"
+                    aria-hidden="true">
+                    <path d="m14.7 6.3 3 3"/>
+                    <path d="m5 19 4.5-1 9.8-9.8a2.1 2.1 0 0 0-3-3L6.5 15 5 19Z"/>
+                    <path d="m13 8 3 3"/>
+                </svg>`,
+        repaired: `
+                <svg viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round"
+                    aria-hidden="true">
+                    <circle cx="12" cy="12" r="9"/>
+                    <path d="m8 12 2.5 2.5L16 9"/>
+                </svg>`,
+      };
+
+      // Severity badge
+      const severityValue = String(report.severity || "Low")
+        .trim()
+        .toLowerCase();
+
+      let severityClass = "severity-low";
+      let severityText = "Low";
+
+      if (severityValue === "high") {
+        severityClass = "severity-high";
+        severityText = "High";
+      } else if (severityValue === "medium") {
+        severityClass = "severity-medium";
+        severityText = "Medium";
+      }
+
+      const severityRow = document.createElement("div");
+      severityRow.className = "map-popup-info";
+
+      const severityLabel = document.createElement("span");
+      severityLabel.className = "map-popup-label";
+      severityLabel.textContent = "Severity";
+
+      const severityBadge = document.createElement("span");
+      severityBadge.className = "map-popup-badge " + severityClass;
+      severityBadge.innerHTML = icons.warning;
+      severityBadge.appendChild(document.createTextNode(severityText));
+
+      severityRow.append(severityLabel, severityBadge);
+      container.appendChild(severityRow);
+
+      // Status badge
+      const statusValue = String(report.status || "Submitted")
+        .trim()
+        .toLowerCase();
+
+      const statusOptions = {
+        submitted: {
+          text: "Submitted",
+          className: "status-submitted",
+          icon: icons.submitted,
+        },
+        "under review": {
+          text: "Under Review",
+          className: "status-under-review",
+          icon: icons.review,
+        },
+        "in progress": {
+          text: "In Progress",
+          className: "status-in-progress",
+          icon: icons.progress,
+        },
+        repaired: {
+          text: "Repaired",
+          className: "status-repaired",
+          icon: icons.repaired,
+        },
+      };
+
+      const statusInfo = statusOptions[statusValue] || {
+        text: report.status || "Submitted",
+        className: "status-submitted",
+        icon: icons.submitted,
+      };
+
+      const statusRow = document.createElement("div");
+      statusRow.className = "map-popup-info";
+
+      const statusLabel = document.createElement("span");
+      statusLabel.className = "map-popup-label";
+      statusLabel.textContent = "Status";
+
+      const statusBadge = document.createElement("span");
+      statusBadge.className = "map-popup-badge " + statusInfo.className;
+      statusBadge.innerHTML = statusInfo.icon;
+      statusBadge.appendChild(document.createTextNode(statusInfo.text));
+
+      statusRow.append(statusLabel, statusBadge);
+      container.appendChild(statusRow);
+      
+      // Report location
+      if (report.street_name || report.location_address) {
+        
+        const location = document.createElement("div");
+        location.className = "map-popup-location";
+
+        const locationTitle = document.createElement("strong");
+        locationTitle.textContent = report.street_name || "Reported Location";
+        
+        location.appendChild(locationTitle);
+
+        if (report.location_address) {
+          const address = document.createElement("p");
+          address.textContent = report.location_address;
+          location.appendChild(address);
+        }
+
+        container.appendChild(location);
+
+      }
+      // Description
+      const description = document.createElement("p");
+      description.className = "map-popup-description";
+      description.textContent =
+        report.description || "No description provided.";
+      container.appendChild(description);
+
+      // Optional report photo
+      if (report.photo) {
+        const photo = document.createElement("img");
+        photo.src =
+          "{{ url_for('static', filename='uploads/') }}" +
+          encodeURIComponent(report.photo);
+        photo.alt = "Photo for pothole report #" + report.id;
+        photo.className = "map-popup-photo";
+        photo.loading = "lazy";
+        photo.addEventListener("error", function () {
+          photo.remove();
+        });
+        container.appendChild(photo);
+      }
+
+      // View report details
+      const detailsLink = document.createElement("a");
+      detailsLink.href = "/reports/" + encodeURIComponent(report.id);
+      detailsLink.className = "map-popup-details-link";
+      detailsLink.textContent = "View Report Details";
+      container.appendChild(detailsLink);
+
+      // Open location in Google Maps
+      const locationLink = document.createElement("a");
+      locationLink.href =
+        "https://www.google.com/maps?q=" +
+        encodeURIComponent(report.latitude) +
+        "," +
+        encodeURIComponent(report.longitude);
+      locationLink.target = "_blank";
+      locationLink.rel = "noopener noreferrer";
+      locationLink.className = "map-popup-location-link";
+      locationLink.textContent = "Open in Google Maps";
+      container.appendChild(locationLink);
+
+      return container;
+    }
+
+    // Add report markers
+    const markers = [];
+
+    reports.forEach(function (report) {
+      const latitude = Number(report.latitude);
+      const longitude = Number(report.longitude);
+
+      if (
+        !Number.isFinite(latitude) ||
+        !Number.isFinite(longitude) ||
+        latitude < -90 ||
+        latitude > 90 ||
+        longitude < -180 ||
+        longitude > 180
+      ) {
+        return;
+      }
+
+      const markerStyle = getMarkerStyle(report.severity, report.status);
+
+      // Warning triangle for unresolved reports;
+      // checkmark for repaired reports.
+      const iconMarkup =
+        markerStyle.icon === "check"
+          ? `
+            <svg viewBox="0 0 24 24"
+                 aria-hidden="true"
+                 focusable="false">
+                <path d="M20 6L9 17l-5-5"
+                      fill="none"
+                      stroke="white"
+                      stroke-width="3"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"/>
+            </svg>
+          `
+          : `
+            <svg viewBox="0 0 24 24"
+                 aria-hidden="true"
+                 focusable="false">
+                <path d="M12 3L22 21H2L12 3Z"
+                      fill="none"
+                      stroke="white"
+                      stroke-width="2"
+                      stroke-linejoin="round"/>
+                <path d="M12 9V14"
+                      stroke="white"
+                      stroke-width="2.5"
+                      stroke-linecap="round"/>
+                <circle cx="12"
+                        cy="17"
+                        r="1.2"
+                        fill="white"/>
+            </svg>
+          `;
+
+      const markerIcon = L.divIcon({
+        className: "pothole-marker-wrapper",
+        html: `
+                <div
+                    class="pothole-marker"
+                    style="background-color: ${markerStyle.color};"
+                    role="img"
+                    aria-label="${
+                      markerStyle.icon === "check"
+                        ? "Repaired pothole"
+                        : String(report.severity || "Unknown") +
+                          " severity pothole"
+                    }">
+                    ${iconMarkup}
+                </div>
+            `,
+        iconSize: [34, 38],
+        iconAnchor: [17, 19],
+        popupAnchor: [0, -19],
+      });
+
+      const marker = L.marker([latitude, longitude], {
+        icon: markerIcon,
+      });
+
+      marker.bindPopup(function () {
+        return createPopup(report);
+      });
+
+      marker.addTo(map);
+      markers.push(marker);
+    });
+
+    // Fit the map around reports, if any exist
+    if (markers.length > 0) {
+      const markerGroup = L.featureGroup(markers);
+
+      map.fitBounds(markerGroup.getBounds(), {
+        padding: [30, 30],
+        maxZoom: 16,
+      });
+    }
+
+    // Fix map rendering when the page layout finishes
+    setTimeout(function () {
+      map.invalidateSize();
+    }, 100);
+
+    console.log("Pothole markers loaded:", markers.length);
+  });
+</script>
+
+{% endblock %}

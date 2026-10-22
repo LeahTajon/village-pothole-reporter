@@ -1,0 +1,540 @@
+
+{% extends "base.html" %}
+
+{% block title %}Report #{{ pothole.id }} | Admin{% endblock %}
+
+{% block extra_css %}
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/admin-report-details.css') }}"
+>
+{% endblock %}
+
+{% block content %}
+<div class="admin-report-page">
+
+    <!-- Page heading -->
+    <div class="admin-report-heading">
+        <div>
+            {% if area_id %}
+                <a 
+                    href="{{ url_for('admin_area_details', area_id=area_id) }}"
+                    class="admin-back-link">
+                    <i class="ti ti-arrow-left"></i>
+                    Back to Area Details 
+                </a>
+            {% else %}
+                <a 
+                    href="{{ url_for('admin_dashboard')}}"
+                    class="admin-back-link">
+                    <i class="ti ti-arrow-left"></i>
+                    Back to Dashboard
+                </a>
+            {% endif %}
+
+            <p class="admin-eyebrow">
+                <i class="ti ti-shield-check"></i>
+                Administration / Report Details
+            </p>
+
+            <h1>Report #{{ pothole.id }}</h1>
+            <p class="admin-heading-description">
+                Review the reported road issue and manage its repair progress.
+            </p>
+        </div>
+
+        <a
+            href="{{ url_for('reports') }}"
+            class="admin-secondary-button"
+        >
+            <i class="ti ti-map-pins"></i>
+            Public Reports
+        </a>
+    </div>
+
+    <!-- Report summary -->
+    <section class="report-summary">
+        <div class="summary-item">
+            <span class="summary-label">Report ID</span>
+            <strong>#{{ pothole.id }}</strong>
+        </div>
+
+        <div class="summary-item">
+            <span class="summary-label">Severity</span>
+            <span class="severity-badge
+                {% if pothole.severity|lower == 'high' or pothole.severity|lower == 'critical' %}
+                    severity-high
+                {% elif pothole.severity|lower == 'medium' %}
+                    severity-medium
+                {% else %}
+                    severity-low
+                {% endif %}">
+                {{ pothole.severity }}
+            </span>
+        </div>
+
+        <div class="summary-item">
+            <span class="summary-label">Current Status</span>
+            <span class="report-status status-{{ pothole.status|lower|replace(' ', '-') }}">
+                {{ pothole.status }}
+            </span>
+        </div>
+
+        <div class="summary-item">
+            <span class="summary-label">Date Submitted</span>
+            <strong>
+                {% if pothole.created_at_guam %}
+                    {{ pothole.created_at_guam.strftime("%b %d, %Y") }}
+                {% else %}
+                    Unavailable
+                {% endif %}
+            </strong>
+            <span class="summary-subtext">
+                {% if pothole.created_at_guam %}
+                    {{ pothole.created_at_guam.strftime("%I:%M %p") }}
+                {% endif %}
+            </span>
+        </div>
+    </section>
+
+    <div class="admin-report-grid">
+
+        <!-- Main column -->
+        <div class="admin-report-main">
+
+            <!-- Description -->
+            <section class="admin-panel">
+                <div class="panel-heading">
+                    <div class="panel-icon">
+                        <i class="ti ti-file-description"></i>
+                    </div>
+                    <div>
+                        <h2>Report Information</h2>
+                        <p>Details submitted by the resident.</p>
+                    </div>
+                </div>
+
+                <div class="report-description">
+                    {{ pothole.description or "No description provided." }}
+                </div>
+
+                {% if pothole.photo %}
+                    <div class="photo-section">
+                        <h3>Original Report Photo</h3>
+
+                        <a
+                            href="{{ url_for('static', filename='uploads/' ~ pothole.photo) }}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="report-photo-link"
+                        >
+                            <img
+                                src="{{ url_for('static', filename='uploads/' ~ pothole.photo) }}"
+                                alt="Original pothole report"
+                                class="report-photo"
+                            >
+                            <span class="photo-open-label">
+                                <i class="ti ti-maximize"></i>
+                                Open full image
+                            </span>
+                        </a>
+                    </div>
+                {% else %}
+                    <div class="photo-empty">
+                        <i class="ti ti-photo-off"></i>
+                        <span>No photo was submitted with this report.</span>
+                    </div>
+                {% endif %}
+            </section>
+
+            <!-- Location -->
+            <section class="admin-panel">
+                <div class="panel-heading">
+                    <div class="panel-icon">
+                        <i class="ti ti-map-pin"></i>
+                    </div>
+                    <div>
+                        <h2>Reported Location</h2>
+                        <p>Map and coordinates for this pothole.</p>
+                    </div>
+                </div>
+
+                <div
+                    id="admin-report-map"
+                    class="admin-report-map"
+                    data-lat="{{ pothole.latitude }}"
+                    data-lng="{{ pothole.longitude }}"
+                ></div>
+
+                <div class="saved-location-details">
+                  <div class="saved-location-item">
+
+                    <span class="saved-location-label">
+                      <i class="ti ti-road"></i>
+                      Street Name
+                    </span>
+
+                    <p>
+                      {{ pothole.street_name or "Street name unavailable" }}
+                    </p>
+                  </div>
+
+                  <div class="saved-location-item">
+                    <span class="saved-location-label">
+                      <i class="ti ti-map-pinned"></i>
+                      Full Address
+                    </span>
+                    <p>
+                      {{ pothole.location_address or "Full address unavailable" }}
+                    </p>
+                  </div>
+                </div>
+
+                <div class="location-details">
+                    <div>
+                        <span class="summary-label">Latitude</span>
+                        <strong>{{ pothole.latitude }}</strong>
+                    </div>
+                    <div>
+                        <span class="summary-label">Longitude</span>
+                        <strong>{{ pothole.longitude }}</strong>
+                    </div>
+                </div>
+
+                <a
+                    class="admin-map-link"
+                    href="https://www.google.com/maps?q={{ pothole.latitude }},{{ pothole.longitude }}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <i class="ti ti-external-link"></i>
+                    Open in Google Maps
+                </a>
+            </section>
+
+            <!-- Repair evidence -->
+            <section class="admin-panel">
+                <div class="panel-heading">
+                    <div class="panel-icon">
+                        <i class="ti ti-tool"></i>
+                    </div>
+                    <div>
+                        <h2>Repair Information</h2>
+                        <p>Document the work completed on this location.</p>
+                    </div>
+                </div>
+
+                {% if pothole.repair_photo %}
+                    <div class="photo-section">
+                        <h3>After-Repair Photo</h3>
+
+                        <a
+                            href="{{ url_for('static', filename='uploads/' ~ pothole.repair_photo) }}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="report-photo-link"
+                        >
+                            <img
+                                src="{{ url_for('static', filename='uploads/' ~ pothole.repair_photo) }}"
+                                alt="Pothole after repair"
+                                class="report-photo"
+                            >
+                            <span class="photo-open-label">
+                                <i class="ti ti-maximize"></i>
+                                Open full image
+                            </span>
+                        </a>
+                    </div>
+                {% else %}
+                    <div class="photo-empty">
+                        <i class="ti ti-camera-plus"></i>
+                        <span>No after-repair photo has been uploaded.</span>
+                    </div>
+                {% endif %}
+
+                <div class="repair-notes">
+                    <span class="summary-label">Repair Notes</span>
+                    <p>
+                        {{ pothole.repair_notes or "No repair notes have been added yet." }}
+                    </p>
+                </div>
+
+                <div class="repair-completion">
+                    <span class="summary-label">Repair Completion Date</span>
+                    <strong>
+                        {% if pothole.repair_completed_at %}
+                            {{ pothole.repair_completed_at.strftime("%b %d, %Y") }}
+                        {% else %}
+                            Not completed
+                        {% endif %}
+                    </strong>
+                </div>
+            </section>
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="admin-report-sidebar">
+            <section class="admin-panel status-management-panel">
+                <div class="panel-heading">
+                    <div class="panel-icon">
+                        <i class="ti ti-adjustments"></i>
+                    </div>
+                    <div>
+                        <h2>Manage Report</h2>
+                        <p>Update status and repair details.</p>
+                    </div>
+                </div>
+
+                <form
+                    action="{{ url_for('update_report_status', pothole_id=pothole.id) }}"
+                    method="POST"
+                    enctype="multipart/form-data"
+                    class="admin-status-form"
+                >
+                    {{ form.hidden_tag() }}
+
+                    <div class="admin-form-field">
+                        <label for="{{ form.status.id }}">Report Status</label>
+                        {{ form.status(class="admin-form-control", id=form.status.id) }}
+                    </div>
+
+                    <div
+                        id="admin-repair-fields"
+                        class="admin-repair-fields"
+                        {% if pothole.status != "Repaired" %}hidden{% endif %}
+                    >
+                        <div class="admin-form-field">
+                            <label for="{{ form.repair_photo.id }}">
+                                After-Repair Photo
+                            </label>
+                            {{ form.repair_photo(
+                                class="admin-form-control admin-file-input",
+                                accept="image/jpeg,image/png,image/webp"
+                            ) }}
+                            <small>
+                                Required when marking a report repaired if no repair photo exists.
+                            </small>
+                        </div>
+
+                        <div class="admin-form-field">
+                            <label for="{{ form.repair_notes.id }}">
+                                Repair Notes
+                            </label>
+                            {{ form.repair_notes(
+                                class="admin-form-control",
+                                rows="4",
+                                placeholder="Describe the repair work..."
+                            ) }}
+                        </div>
+                    </div>
+
+                    <button type="submit" class="admin-primary-button">
+                        <i class="ti ti-device-floppy"></i>
+                        Save Changes
+                    </button>
+                </form>
+
+                <!-- Delete Report -->
+                <div class="delete-report-form">
+                    <button
+                        type="button"
+                        class="admin-delete-button"
+                        id="openDeleteModal">
+                        <i class="ti ti-trash"></i>
+                        Delete Report 
+                    </button>
+                </div>
+
+                <!-- Delete confirmation modal -->
+                <div
+                    class="delete-modal-overlay"
+                    id="deleteModal"
+                    aria-hidden="true">
+
+                    <div 
+                        class="delete-modal"
+                        role="dialog"
+                        aria-modal="true"
+                        aria-labelledby="deleteModalTitle"
+                        aria-describedby="delteModalMessage">
+
+                        <div class="delete-modal-icon">
+                            <i class="ti ti-trash"></i>
+                        </div>
+
+                        <h2 id="deleteModalTitle">Delete this report?</h2>
+
+                        <p id="deleteModalMessage">
+                            Are you sure you want to permanently delete 
+                            Repor #{{ pothole.id }}? This action cannot be undone.
+                        </p>
+
+                        <div class="delete-modal-actions">
+                            <button
+                                type="button"
+                                class="delete-cancel-button"
+                                id="cancelDeleteModal">
+                            Cancel 
+                            </button>
+                             <form 
+                                action="{{ url_for('delete_report', pothole_id=pothole.
+                                id) }}"
+                                method="POST"
+                                class="delete-report-form"
+                            >
+                                {{ form.csrf_token }}
+
+                                <button type="submit" class="admin-delete-button">
+                                    <i class="ti ti-trash"></i>
+                                    Delete Report
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>            
+            </section>
+
+            <div class="admin-tip">
+                <i class="ti ti-info-circle"></i>
+                <p>
+                    Upload an after-repair photo before marking this report as repaired.
+                    The repair details will be saved with the report.
+                </p>
+            </div>
+        </aside>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+    const mapElement = document.getElementById("admin-report-map");
+
+    if (mapElement && window.L) {
+        const lat = Number(mapElement.dataset.lat);
+        const lng = Number(mapElement.dataset.lng);
+
+        if (
+            Number.isFinite(lat) &&
+            Number.isFinite(lng) &&
+            lat >= -90 &&
+            lat <= 90 &&
+            lng >= -180 &&
+            lng <= 180
+        ) {
+            const map = L.map(mapElement).setView([lat, lng], 17);
+
+            // Regular street map
+            const streetLayer = L.tileLayer(
+                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+                    attribution:
+                        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                    maxZoom: 19
+                }
+            );
+
+            // Satellite imagery
+            const satelliteLayer = L.tileLayer(
+                "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+                {
+                    attribution:
+                        "Tiles &copy; Esri and its imagery providers",
+                    maxZoom: 19
+                }
+            );
+
+            // Show the street map by default
+            streetLayer.addTo(map);
+
+            // Add the map layer switcher
+            L.control.layers(
+                {
+                    "Street View": streetLayer,
+                    "Satellite View": satelliteLayer
+                },
+                null,
+                {
+                    collapsed: false
+                }
+            ).addTo(map);
+
+            // Mark the reported pothole
+            L.marker([lat, lng])
+                .addTo(map)
+                .bindPopup("Reported pothole")
+                .openPopup();
+
+            setTimeout(function () {
+                map.invalidateSize();
+            }, 100);
+        } else {
+            mapElement.textContent =
+                "The saved location coordinates are invalid.";
+        }
+    }
+
+    // Show repair fields only when Repaired is selected
+    const statusSelect = document.getElementById("status");
+    const repairFields = document.getElementById("admin-repair-fields");
+
+    if (statusSelect && repairFields) {
+        function toggleRepairFields() {
+            repairFields.hidden = statusSelect.value !== "Repaired";
+        }
+
+        statusSelect.addEventListener("change", toggleRepairFields);
+        toggleRepairFields();
+    }
+});
+
+</script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const modal = document.getElementById("deleteModal");
+    const openButton = document.getElementById("openDeleteModal");
+    const cancelButton = document.getElementById("cancelDeleteModal");
+
+    if (!modal || !openButton || !cancelButton) {
+        return;
+    }
+
+    function openModal() {
+        modal.classList.add("is-open");
+        modal.setAttribute("aria-hidden", "false");
+        cancelButton.focus();
+    }
+
+    function closeModal() {
+        modal.classList.remove("is-open");
+        modal.setAttribute("aria-hidden", "true");
+        openButton.focus();
+    }
+
+    openButton.addEventListener("click", openModal);
+    cancelButton.addEventListener("click", closeModal);
+
+    // Close when clicking the dark background.
+    modal.addEventListener("click", function (event) {
+        if (event.target === modal) {
+            closeModal();
+        }
+    });
+
+    // Close when pressing Escape.
+    document.addEventListener("keydown", function (event) {
+        if (
+            event.key === "Escape" &&
+            modal.classList.contains("is-open")
+        ) {
+            closeModal();
+        }
+    });
+});
+</script>
+
+{% endblock %}

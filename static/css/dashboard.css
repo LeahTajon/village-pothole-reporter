@@ -1,0 +1,768 @@
+
+/* ========================================
+   Status Cell & Edit Button
+======================================== */
+
+.status-cell {
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.status-edit-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    color: #6554c0;
+    background-color: #f7f5ff;
+    border: 1px solid #e8e5f5;
+    border-radius: 8px;
+    transition: background-color 0.2s ease,
+                color 0.2s ease,
+                border-color 0.2s ease;
+}
+
+.status-edit-button:hover {
+    color: #ffffff;
+    background-color: #6554c0;
+    border-color: #6554c0;
+}
+
+
+/* ========================================
+   Update Status Modal
+======================================== */
+
+.status-modal-content {
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid #eeecf7;
+    border-radius: 18px;
+    box-shadow: 0 20px 60px rgba(43, 35, 85, 0.18);
+}
+
+/* Header */
+
+.status-modal-content .modal-header {
+    padding: 24px;
+    background: #faf9ff;
+    border-bottom: 1px solid #efedf7;
+}
+
+.status-modal-content .modal-title {
+    color: #292543;
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+.status-modal-content .modal-header .text-muted {
+    margin-top: 5px;
+    color: #77738d !important;
+    font-size: 0.84rem;
+}
+
+.status-modal-content .btn-close {
+    border-radius: 8px;
+    transition: background-color 0.2s ease;
+}
+
+.status-modal-content .btn-close:hover {
+    background-color: #eeebfa;
+}
+
+/* Body */
+
+.status-modal-content .modal-body {
+    padding: 26px 24px;
+}
+
+.status-modal-content .form-label {
+    display: block;
+    margin-bottom: 10px;
+    color: #393550;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+/* Status Dropdown */
+
+.status-modal-select {
+    width: 100%;
+    min-height: 48px;
+    padding: 10px 40px 10px 14px;
+    color: #343149;
+    background-color: #ffffff;
+    border: 1px solid #dedbea;
+    border-radius: 11px;
+    font-size: 0.92rem;
+    font-weight: 500;
+    transition: border-color 0.2s ease,
+                box-shadow 0.2s ease;
+}
+
+.status-modal-select:hover {
+    border-color: #b9b0e8;
+}
+
+.status-modal-select:focus {
+    border-color: #6554c0;
+    box-shadow: 0 0 0 4px rgba(101, 84, 192, 0.12);
+    outline: none;
+}
+
+/* Footer */
+
+.status-modal-content .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 18px 24px 24px;
+    background: #fcfbff;
+    border-top: 1px solid #efedf7;
+}
+
+.status-modal-content .modal-footer .btn {
+    min-height: 42px;
+    padding: 10px 17px;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    transition: background-color 0.2s ease,
+                border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                transform 0.2s ease;
+}
+
+/* Cancel Button */
+
+.status-modal-content .modal-footer .btn-light {
+    color: #5d5873;
+    background: #ffffff;
+    border: 1px solid #e3e0ee;
+}
+
+.status-modal-content .modal-footer .btn-light:hover {
+    color: #39334f;
+    background: #f2f0fa;
+    border-color: #d5d0e8;
+}
+
+/* Update Status Button */
+
+.status-modal-content .modal-footer .btn-primary {
+    color: #ffffff;
+    background: #6554c0;
+    border: 1px solid #6554c0;
+    box-shadow: 0 3px 8px rgba(101, 84, 192, 0.16);
+}
+
+.status-modal-content .modal-footer .btn-primary:hover {
+    background: #5141a5;
+    border-color: #5141a5;
+    box-shadow: 0 5px 12px rgba(101, 84, 192, 0.23);
+    transform: translateY(-1px);
+}
+
+/* Modal Backdrop */
+
+.modal-backdrop.show {
+    opacity: 0.48;
+}
+
+
+/* ========================================
+   Status Cell & Edit Button
+======================================== */
+
+.status-cell {
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.status-edit-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    color: #6554c0;
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    box-shadow: none;
+    transition: color 0.2s ease;
+}
+
+.status-edit-button:hover {
+    color: #5141a5;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+
+/* Affected Areas */
+.affected-areas-section {
+    margin-bottom: 2rem;
+}
+
+.affected-areas-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.affected-areas-heading h2 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #25243a;
+}
+
+.affected-areas-heading p {
+    margin: 0.35rem 0 0;
+    color: #77778b;
+    font-size: 0.9rem;
+}
+
+.affected-areas-count {
+    padding: 0.4rem 0.75rem;
+    border-radius: 999px;
+    background: #eeebff;
+    color: #6848d9;
+    font-size: 0.8rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.affected-areas-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.affected-area-card {
+    min-width: 0;
+    padding: 1.25rem;
+    background: #fff;
+    border: 1px solid #e9e8f2;
+    border-radius: 16px;
+    box-shadow: 0 3px 12px rgb(35 30 80 / 4%);
+}
+
+.affected-area-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+.affected-area-top h3 {
+    margin: 0;
+    color: #29283d;
+    font-size: 1rem;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+.affected-area-location {
+    margin: 0.35rem 0 0;
+    color: #77778b;
+    font-size: 0.85rem;
+}
+
+.area-status {
+    display: inline-block;
+    padding: 0.35rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.area-status-open {
+    background: #fff0e7;
+    color: #b85c20;
+}
+
+.area-status-repaired {
+    background: #e5f7ed;
+    color: #23784b;
+}
+
+
+.affected-area-stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+}
+
+.area-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: 0.7rem 0.4rem;
+    border-radius: 10px;
+    background: #f7f7fc;
+    text-align: center;
+}
+
+.area-stat-label {
+    color: #77778b;
+    font-size: 0.72rem;
+}
+
+.area-stat strong {
+    color: #29283d;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.area-attention-note {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin: 1rem 0 0;
+    color: #b85c20;
+    font-size: 0.82rem;
+    font-weight: 600;
+}
+
+.affected-area-details {
+    margin-top: 1rem;
+    border-top: 1px solid #eeedf4;
+    padding-top: 0.85rem;
+}
+
+.affected-area-details summary {
+    color: #6f52d9;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.affected-area-report-list {
+    margin-top: 0.6rem;
+}
+
+.affected-area-report {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #f0eff5;
+    color: inherit;
+    text-decoration: none;
+}
+
+.affected-area-report:last-child {
+    border-bottom: none;
+}
+
+.affected-area-report:hover {
+    color: #6f52d9;
+}
+
+.affected-area-report div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.affected-area-report strong {
+    font-size: 0.85rem;
+}
+
+.affected-area-report span {
+    color: #77778b;
+    font-size: 0.78rem;
+}
+
+.affected-area-empty,
+.affected-areas-empty {
+    padding: 1.5rem;
+    border: 1px dashed #dedce9;
+    border-radius: 12px;
+    color: #77778b;
+    text-align: center;
+}
+
+
+/* Compact Affected Areas section */
+.affected-areas-section {
+    margin-bottom: 2rem;
+}
+
+.affected-areas-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.affected-areas-heading h2 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin: 0 0 0.25rem;
+}
+
+.affected-areas-heading p {
+    color: #777b89;
+    font-size: 0.85rem;
+    margin: 0;
+}
+
+.affected-areas-summary {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.affected-areas-count {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.35rem 0.65rem;
+    border-radius: 999px;
+    background: #f0efff;
+    color: #6651d9;
+    font-size: 0.78rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.affected-areas-count.urgent-count {
+    background: #fff0ee;
+    color: #c0392b;
+}
+
+.affected-areas-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid #e8e9f0;
+    border-radius: 12px;
+    background: #fff;
+}
+
+.affected-areas-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+}
+
+.affected-areas-table th {
+    padding: 0.8rem 0.9rem;
+    background: #f8f8fc;
+    color: #777b89;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.035em;
+    white-space: nowrap;
+}
+
+.affected-areas-table td {
+    padding: 0.85rem 0.9rem;
+    border-top: 1px solid #eeeef3;
+    vertical-align: middle;
+}
+
+.affected-areas-table tbody tr:hover {
+    background: #fafaff;
+}
+
+.area-street-name {
+    color: #292b38;
+    font-weight: 650;
+}
+
+.area-unresolved-count {
+    font-weight: 700;
+}
+
+.area-priority {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.35rem 0.55rem;
+    border-radius: 6px;
+    font-size: 0.74rem;
+    font-weight: 650;
+    white-space: nowrap;
+}
+
+.priority-immediate {
+    background: #fff0ee;
+    color: #c0392b;
+}
+
+.priority-review {
+    background: #fff6e5;
+    color: #9a6200;
+}
+
+.priority-normal {
+    background: #d8edf0;
+    color: #234178;
+}
+
+.priority-resolved {
+    background-color: #e6f4ea;
+    color: #237a59;
+}
+
+.area-priority.priority-resolved {
+    background-color: #e6f4ea;
+    color: #237a45;
+}
+
+.area-report-details {
+    position: relative;
+}
+
+.area-report-details summary {
+    cursor: pointer;
+    color: #6651d9;
+    font-weight: 650;
+    list-style: none;
+}
+
+.area-report-details summary::-webkit-details-marker {
+    display: none;
+}
+
+.area-report-details summary::after {
+    content: " ▾";
+    font-size: 0.75rem;
+}
+
+.area-report-details[open] summary::after {
+    content: " ▴";
+}
+
+.area-report-dropdown {
+    position: absolute;
+    z-index: 20;
+    top: calc(100% + 0.5rem);
+    right: 0;
+    width: 250px;
+    max-width: min(250px, 75vw);
+    padding: 0.4rem;
+    border: 1px solid #e8e9f0;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 8px 24px rgb(30 30 60 / 12%);
+}
+
+.area-report-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.65rem;
+    border-radius: 6px;
+    color: #343644;
+    font-size: 0.8rem;
+    text-decoration: none;
+}
+
+.area-report-link:hover {
+    background: #f5f3ff;
+    color: #6651d9;
+}
+
+.area-report-status {
+    color: #777b89;
+    font-size: 0.72rem;
+    text-align: right;
+}
+
+.affected-areas-empty {
+    padding: 1rem;
+    color: #777b89;
+    font-size: 0.9rem;
+}
+
+
+/* Admin dashboard page heading */
+.dashboard-page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 32px;
+    padding: 8px 0 24px;
+    border-bottom: 1px solid #e9e8f2;
+}
+
+.dashboard-heading {
+    min-width: 0;
+}
+
+.dashboard-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 12px;
+    color: #7564c9;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+}
+
+.dashboard-heading-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    background: #efecff;
+    color: #7564c9;
+    font-size: 18px;
+}
+
+.dashboard-heading h1 {
+    margin: 0 0 8px;
+    color: #25243a;
+    font-size: clamp(1.7rem, 3vw, 2.15rem);
+    font-weight: 750;
+    letter-spacing: -0.8px;
+    line-height: 1.2;
+}
+
+.dashboard-heading p {
+    margin: 0;
+    color: #77778a;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.dashboard-logout-btn {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 15px;
+    border: 1px solid #e3e1ec;
+    border-radius: 10px;
+    background: #fff;
+    color: #5e5b70;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s ease,
+                border-color 0.2s ease,
+                color 0.2s ease;
+}
+
+.dashboard-logout-btn:hover {
+    border-color: #d6ceff;
+    background: #f6f4ff;
+    color: #6d55d9;
+}
+
+/* Responsive heading */
+@media (max-width: 575.98px) {
+    .dashboard-page-header {
+        align-items: flex-start;
+        gap: 16px;
+        margin-bottom: 24px;
+        padding-bottom: 20px;
+    }
+
+    .dashboard-heading h1 {
+        font-size: 1.6rem;
+        letter-spacing: -0.5px;
+    }
+
+    .dashboard-heading p {
+        font-size: 13px;
+    }
+
+    .dashboard-logout-btn {
+        padding: 9px 10px;
+        font-size: 12px;
+    }
+}
+
+/* ========================================
+   Responsive Modal
+======================================== */
+
+/* Smaller screens */
+@media (max-width: 768px) {
+    .affected-areas-table {
+        min-width: 680px;
+    }
+
+    .affected-areas-heading {
+        align-items: flex-start;
+    }
+
+    .affected-areas-table th,
+    .affected-areas-table td {
+        padding: 0.7rem;
+    }
+}
+
+
+@media (max-width: 900px) {
+    .affected-areas-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 520px) {
+    .affected-areas-heading {
+        align-items: flex-start;
+    }
+
+    .affected-area-card {
+        padding: 1rem;
+    }
+
+    .affected-area-top {
+        flex-direction: column;
+    }
+
+    .affected-area-stats {
+        gap: 0.35rem;
+    }
+
+    .area-stat {
+        padding: 0.65rem 0.2rem;
+    }
+
+    .area-stat-label {
+        font-size: 0.68rem;
+    }
+}
+
+
+@media (max-width: 575.98px) {
+    .status-modal-content {
+        border-radius: 14px;
+    }
+
+    .status-modal-content .modal-header,
+    .status-modal-content .modal-body {
+        padding: 20px;
+    }
+
+    .status-modal-content .modal-footer {
+        padding: 16px 20px 20px;
+    }
+
+    .status-modal-content .modal-footer .btn {
+        flex: 1;
+    }
+}

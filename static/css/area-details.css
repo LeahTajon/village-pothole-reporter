@@ -1,0 +1,307 @@
+
+/* ========================================
+   Affected Area Details
+======================================== */
+
+.area-details-page {
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 28px 30px !important;
+    color: #292943;
+    font-family: "Inter", sans-serif;
+}
+
+/* Page heading */
+
+.area-details-page h1 {
+    color: #292943;
+    font-size: 1.8rem;
+    font-weight: 750;
+    letter-spacing: -0.7px;
+}
+
+.area-details-page h2 {
+    color: #292943;
+    font-weight: 700;
+}
+
+.area-details-page .text-muted {
+    color: #77778f !important;
+}
+
+.area-details-page .admin-back-link,
+.area-details-page a.btn-outline-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 15px;
+    border: 1px solid #e4e1f2;
+    border-radius: 10px;
+    background: #fff;
+    color: #6d55d9;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.area-details-page a.btn-outline-secondary:hover {
+    background: #f3f0ff;
+    border-color: #c9befb;
+    color: #6045cf;
+}
+
+/* Summary cards */
+
+.area-details-page .row.g-3 {
+    margin-top: 4px;
+}
+
+.area-details-page .row.g-3 > div > div {
+    height: 100%;
+    min-height: 125px;
+    padding: 22px !important;
+    border: 1px solid #ebe9f5;
+    border-radius: 16px !important;
+    background: #fff !important;
+    box-shadow: 0 4px 16px rgba(47, 39, 94, 0.04);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.area-details-page .row.g-3 > div > div:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(47, 39, 94, 0.08);
+}
+
+.area-details-page .summary-label {
+    color: #77778f;
+    font-size: 0.83rem;
+    font-weight: 600;
+}
+
+.area-details-page .row.g-3 h3 {
+    margin-top: 12px;
+    color: #7658e8;
+    font-size: 1.9rem;
+    font-weight: 750;
+}
+
+/* Area assessment */
+
+.area-details-page .mb-4:has(> h2.h5) {
+    padding: 22px 24px;
+    border: 1px solid #ebe9f5;
+    border-radius: 16px;
+    background: #faf9ff;
+}
+
+.area-details-page h2.h5 {
+    margin-bottom: 10px;
+    font-size: 1.05rem;
+}
+
+.area-details-page .mb-4:has(> h2.h5) p {
+    font-size: 0.92rem;
+    line-height: 1.7;
+}
+
+.area-details-page .mb-4:has(> h2.h5) strong {
+    color: #4d466c;
+}
+
+/* Reports table container */
+
+.area-details-page .table-responsive {
+    overflow-x: auto;
+    border: 1px solid #eae8f3;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 4px 16px rgba(47, 39, 94, 0.04);
+}
+
+.area-details-page table {
+    min-width: 720px;
+    margin-bottom: 0;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.area-details-page .table thead th {
+    padding: 16px 18px;
+    border-bottom: 1px solid #eae8f3;
+    background: #f7f6fc;
+    color: #686580;
+    font-size: 0.77rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.area-details-page .table tbody td {
+    padding: 17px 18px;
+    border-bottom: 1px solid #f0eef6;
+    color: #48475f;
+    font-size: 0.9rem;
+    vertical-align: middle;
+}
+
+.area-details-page .table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.area-details-page .table tbody tr {
+    transition: background 0.15s ease;
+}
+
+.area-details-page .table tbody tr:hover {
+    background: #faf9ff;
+}
+
+.area-details-page .table tbody td:first-child {
+    color: #6f53d9;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+/* Report action button */
+
+.area-details-page .btn-outline-primary {
+    padding: 8px 12px;
+    border: 1px solid #dcd4ff;
+    border-radius: 9px;
+    background: #f7f4ff;
+    color: #6b50d5;
+    font-size: 0.82rem;
+    font-weight: 650;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
+
+.area-details-page .btn-outline-primary:hover {
+    border-color: #795de8;
+    background: #795de8;
+    color: #fff;
+}
+
+/* Pagination */
+
+.area-details-page .pagination {
+    gap: 7px;
+}
+
+.area-details-page .page-link {
+    min-width: 40px;
+    padding: 10px 14px;
+    border: 1px solid #e6e2f3;
+    border-radius: 9px !important;
+    background: #fff;
+    color: #6b50d5;
+    font-size: 0.87rem;
+    text-decoration: none;
+}
+
+.area-details-page .page-item:not(.disabled) .page-link:hover {
+    border-color: #c9befb;
+    background: #f5f2ff;
+}
+
+.area-details-page .page-item.disabled .page-link {
+    background: #f8f7fb;
+    color: #9996ad;
+}
+
+/* Bulk Update*/
+.bulk-update-section {
+    margin: 1.5rem 0;
+    padding: 1.5rem;
+    background: #fff;
+    border: 1px solid #e8e5f5;
+    border-radius: 16px;
+}
+
+.bulk-update-heading h2 {
+    margin-bottom: 0.4rem;
+    font-size: 1.15rem;
+    font-weight: 600;
+}
+
+.bulk-update-heading p {
+    margin-bottom: 1.25rem;
+    color: #6b7280;
+    font-size: 0.9rem;
+}
+
+.bulk-update-section .form-label {
+    font-weight: 500;
+}
+
+.bulk-update-section .form-control,
+.bulk-update-section .form-select {
+    border-color: #ded9f0;
+    border-radius: 10px;
+}
+
+.bulk-update-section .btn-primary {
+    background: #7c5cff;
+    border-color: #7c5cff;
+    border-radius: 10px;
+}
+
+.bulk-update-section .btn-primary:hover {
+    background: #6845eb;
+    border-color: #6845eb;
+}
+
+.priority-resolved {
+    background-color: #e6f4ea;
+    color: #237a45;
+}
+
+
+/* Footer text */
+
+.area-details-page > p.text-center {
+    margin-top: 20px !important;
+    font-size: 0.83rem;
+}
+
+/* Responsive adjustments */
+
+@media (max-width: 768px) {
+    .area-details-page {
+        padding: 20px 14px !important;
+    }
+
+    .area-details-page h1 {
+        font-size: 1.45rem;
+    }
+
+    .area-details-page .row.g-3 > div > div {
+        min-height: 105px;
+        padding: 16px !important;
+    }
+
+    .area-details-page .row.g-3 h3 {
+        font-size: 1.55rem;
+    }
+
+    .area-details-page .mb-4:has(> h2.h5) {
+        padding: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .area-details-page {
+        padding: 16px 10px !important;
+    }
+
+    .area-details-page .d-flex.justify-content-between {
+        align-items: flex-start !important;
+    }
+
+    .area-details-page a.btn-outline-secondary {
+        padding: 8px 11px;
+        font-size: 0.82rem;
+    }
+}

@@ -1,0 +1,256 @@
+
+{% extends "base.html" %}
+
+{% block title %}Affected Area Details | Village Pothole Reporter{% endblock %}
+
+{% block extra_css %}
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/area-details.css') }}"
+>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4 area-details-page">
+
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+        <div>
+            <h1 class="h3 mb-1">Affected Area Details</h1>
+            <p class="text-muted mb-0">
+                {{ area.street_name }}
+            </p>
+        </div>
+
+        <a href="{{ url_for('admin_dashboard') }}"
+           class="btn btn-outline-secondary">
+            <i class="ti ti-arrow-left"></i>
+            Back to Dashboard
+        </a>
+    </div>
+
+    <!-- Area summary -->
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-lg-3">
+            <div class="p-3 rounded-3 bg-light h-100">
+                <p class="text-muted small mb-1">Total Reports</p>
+                <h3 class="mb-0">{{ area.total_reports }}</h3>
+            </div>
+        </div>
+
+        <div class="col-6 col-lg-3">
+            <div class="p-3 rounded-3 bg-light h-100">
+                <p class="text-muted small mb-1">Unresolved</p>
+                <h3 class="mb-0">{{ area.unresolved_count }}</h3>
+            </div>
+        </div>
+
+        <div class="col-6 col-lg-3">
+            <div class="p-3 rounded-3 bg-light h-100">
+                <p class="text-muted small mb-1">Repaired</p>
+                <h3 class="mb-0">{{ area.repaired_count }}</h3>
+            </div>
+        </div>
+
+        <div class="col-6 col-lg-3">
+            <div class="p-3 rounded-3 bg-light h-100">
+                <p class="text-muted small mb-1">Area Priority</p>
+                <h3 class="mb-0">{{ area.priority }}</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- Priority explanation -->
+    <div class="mb-4">
+        <h2 class="h5">Area Assessment</h2>
+        <p class="text-muted">
+            This assessment is based on the number of unresolved reports
+            and unresolved high-severity reports in this area.
+        </p>
+
+        <p>
+            <strong>High severity:</strong>
+            {{ area.severity_counts["High"] }}
+            <span class="mx-2">|</span>
+
+            <strong>Medium severity:</strong>
+            {{ area.severity_counts["Medium"] }}
+            <span class="mx-2">|</span>
+
+            <strong>Low severity:</strong>
+            {{ area.severity_counts["Low"] }}
+        </p>
+    </div>
+
+    <!-- Bulk Update -->
+    <section class="bulk-update-section">
+        <div class="bulk-update-heading">
+            <h2>Update All Reports</h2>
+            <p>
+                Apply one status to all {{ area.total_reports }} reports 
+                in this affected area.
+            </p>
+        </div>
+
+        <form 
+            action="{{ url_for('update_area_status', area_id=area.area_id) }}"
+            method="POST"
+            enctype="multipart/form-data"
+        >
+            {{ bulk_form.hidden_tag() }}
+
+            <div class="mb-3">
+                {{ bulk_form.status.label(class="form-label") }}
+                {{ bulk_form.status(class="form-select", id="bulk-status") }}
+                {% for error in bulk_form.status.errors %}
+                    <small class="text-danger">{{ error }}</small>
+                {% endfor %}
+            </div>
+
+            <div class="mb-3" id="bulk-repair-photo-group">
+                {{ bulk_form.repair_photo.label(class="form-label") }}
+                {{ bulk_form.repair_photo(class="form-control", accept=".jpg,.jpeg,.png,.webp") }}
+                <small class="text-muted">
+                    Optional. If uploaded, this photo will be attached to every report
+                    in this affected area.
+                </small>
+                {% for error in bulk_form.repair_photo.errors %}
+                    <small class="text-danger d-block">{{ error }}</small>
+                {% endfor %}
+            </div>
+
+            <div class="mb-3" id="bulk-repair-notes-group">
+                {{ bulk_form.repair_notes.label(class="form-label") }}
+                {{ bulk_form.repair_notes(class="form-control", rows="3", placeholder="Describe the repair completed...") }}
+                <small class="text-muted">
+                    These notes will be applied to every report when marking the area as repaired.
+                </small>
+                {% for error in bulk_form.repair_notes.errors %}
+                    <small class="text-danger d-block">{{ error }}</small>
+                {% endfor %}
+            </div>
+
+            <button
+                type="submit"
+                class="btn btn-primary"
+            >
+                {{ bulk_form.submit.label.text }}
+            </button>
+        </form>
+    </section>
+
+    <!-- Reports table -->
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th>Report ID</th>
+                    <th>Location</th>
+                    <th>Severity</th>
+                    <th>Status</th>
+                    <th>Date Reported</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for report in reports %}
+                <tr>
+                    <td>#{{ report.id }}</td>
+
+                    <td>
+                        {{ report.street_name or report.location_address or "Location unavailable" }}
+                    </td>
+
+                    <td>{{ report.severity }}</td>
+
+                    <td>{{ report.status }}</td>
+
+                    <td>
+                        {% if report.created_at_guam %}
+                            {{ report.created_at_guam.strftime("%b %d, %Y") }}
+                        {% else %}
+                            —
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        <a
+                            href="{{ url_for('admin_report_details', pothole_id=report.id, area_id=area.area_id) }}"
+                            class="btn btn-sm btn-outline-primary"
+                        >
+                            View Report
+                        </a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="6" class="text-center py-4">
+                        No reports found in this area.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination -->
+    {% if total_pages > 1 %}
+    <nav aria-label="Area reports pagination" class="mt-4">
+        <ul class="pagination justify-content-center">
+
+            <li class="page-item {% if page <= 1 %}disabled{% endif %}">
+                <a
+                    class="page-link"
+                    href="{{ url_for('admin_area_details', area_id=area.area_id, page=page-1) }}"
+                >
+                    Previous
+                </a>
+            </li>
+
+            <li class="page-item disabled">
+                <span class="page-link">
+                    Page {{ page }} of {{ total_pages }}
+                </span>
+            </li>
+
+            <li class="page-item {% if page >= total_pages %}disabled{% endif %}">
+                <a
+                    class="page-link"
+                    href="{{ url_for('admin_area_details', area_id=area.area_id, page=page+1) }}"
+                >
+                    Next
+                </a>
+            </li>
+
+        </ul>
+    </nav>
+    {% endif %}
+
+    <p class="text-muted small text-center mt-3">
+        Showing {{ reports|length }} of {{ total_reports }} reports.
+    </p>
+
+</div>
+
+<script>
+    
+    document.addEventListener("DOMContentLoaded", function () {
+        const statusSelect = document.getElementById("bulk-status");
+        const photoGroup = document.getElementById("bulk-repair-photo-group");
+        const notesGroup = document.getElementById("bulk-repair-notes-group");
+
+        if (!statusSelect || !photoGroup || !notesGroup) return;
+
+        function updateRepairFields() {
+            const isRepaired = statusSelect.value === "Repaired";
+
+            photoGroup.hidden = !isRepaired;
+            notesGroup.hidden = !isRepaired;
+        }
+
+        statusSelect.addEventListener("change", updateRepairFields);
+        updateRepairFields();
+    });
+
+</script>
+{% endblock %}

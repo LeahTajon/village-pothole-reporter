@@ -1,0 +1,296 @@
+{% extends "base.html" %}
+
+{% block title %} Home | Village Pothole Reporter {% endblock %}
+
+{% block content %}
+<section class="hero-section">
+    <div class="container">
+        <div class="hero-content">
+            <span class="hero-eyebrow">
+                COMMUNITY ROAD SAFETY
+            </span>
+
+            <h1>Help us build
+            <span>safer roads.</span>
+            </h1>
+
+            <p>
+                Found a pothole in our village?
+                Let us know where it is so the right people
+                can review the problem and work toward a solution.
+            </p>
+
+            <a 
+                href="#report"
+                class="btn btn-primary btn-lg">
+                <span class="me-2">📍</span>
+                Report a Pothole
+            </a>
+
+            <div class="hero-note">
+                No account required to submit a report.
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="report-section" id="report">
+    <div class="container">
+        <div class="section-heading">
+            <span class="section-eyebrow">GET INVOLVED</span>
+            <h2>Make our roads safer together.</h2>
+            <p>
+                Your report helps village officials identify
+                road problems that need attention.
+            </p>
+        </div>
+
+        
+        <div class="info-card-container row g-4">
+            <!-- Pin Location Card -->
+            <div class="col-md-4">
+                <div class="info-card">
+                    <div class="info-icon">📍</div>
+                    <h3>Pin the location</h3>
+                    <p>
+                        Mark the exact place where you found a pothole on our village map.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Describe the problem Card -->
+            <div class="col-md-4">
+                <div class="info-card">
+                    <div class="info-icon">📷</div>
+                    <h3>Describe the problem</h3>
+                    <p>
+                        Tell us what you found and optionally attach a photo of the road damage.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Follow progress Card -->
+            <div class="col-md-4">
+                <div class="info-card">
+                    <div class="info-icon">🛠️</div>
+                    <h3>Follow progress</h3>
+                    <p>Check report statuses to see whether a pothole is under review or resolved.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages mb-3">
+                    {% for category, message in messages %}
+                        <div
+                            class="alert alert-{{ category }} alert-dismissible fade show"
+                            role="alert">
+
+                            {{ message }}
+
+                            <button
+                                type="button"
+                                class="btn-close"
+                                data-bs-dismiss="alert"
+                                aria-label="Close">
+                            </button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <div class="map-panel">
+            <div class="map-panel-header">
+                <div>
+                    <span class="section-eyebrow">REPORT A ROAD PROBLEM</span>
+                    <h3>Select the pothole location</h3>
+                    <p>Click the map to place a pin. You can drag it to adjust the location.</p>
+                </div>
+            </div>
+
+            <!-- Street Search -->
+            <div class="street-search-panel">
+                <form id="street-search-form">
+                    <label for="street-search-input" class="form-label">
+                        Find a street or place in Dededo
+                    </label>
+
+                    <div class="street-search-controls">
+                        <input 
+                            type="search"
+                            id="street-search-input"
+                            class="form-control"
+                            placeholder="Search streets, schools, landmarks..."
+                            autocomplete="off"
+                        >
+
+                        <button
+                            type="submit"
+                            id="street-search-button"
+                            class="btn btn-primary">
+                            Search 
+                        </button>
+                    </div>
+
+                    <!-- Autocomplete -->
+                    <div 
+                        id="street-search-suggestions"
+                        class="place-suggestions"
+                        role="listbox"
+                        aria-label="Matching places"
+                        hidden></div>
+
+                    <p 
+                        id="street-search-message" 
+                        class="street-search-message"
+                        role="status"
+                        aria-live="polite">
+                    </p>
+                </form>
+            </div>
+
+            <!-- Dededo Map -->
+            <div id="pothole-map"></div>
+            
+            <div class="location-details">
+                <div class="location-status">
+                    <span class="location-dot"></span>
+                    <span id="location-message">No location selected yet</span>
+                </div>
+
+                <div class="coordinates">
+                    <div>
+                        <span>LATITUDE</span>
+                        <strong id="latitude">Not selected</strong>
+                    </div>
+
+                    <div>
+                        <span>LONGITUDE</span>
+                        <strong id="longitude">Not selected</strong>
+                    </div>
+                </div>
+
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    id="confirm-location"
+                    disabled
+                >
+                    Confirm Location
+                </button>
+            </div>
+        </div>
+
+        <!-- Pothole Report Form -->
+        <div class="report-form-panel mt-4" id="report-form-panel">
+
+            <div class="report-form-header">
+                <span class="section-eyebrow">REPORT DETAILS</span>
+                <h3>Tell us about the pothole</h3>
+                <p>Confirm the location on the map, then complete the details below.</p>
+            </div>
+
+            <form 
+                action="{{ url_for('submit_report')}}"
+                id="pothole-report-form"
+                method="POST"
+                enctype="multipart/form-data"
+                >
+                {{ form.hidden_tag() }}
+
+                <input 
+                    type="hidden"
+                    id="report-latitude"
+                    name="latitude"
+                    value="">
+
+                <input 
+                    type="hidden"
+                    id="report-longitude"
+                    name="longitude"
+                    value="">
+
+                <input 
+                    type="hidden"
+                    id="street-name-input"
+                    name="street_name">
+                
+                <input 
+                    type="hidden"
+                    id="location-address-input"
+                    name="location_address">
+                
+                <div class="mb-3">
+                    {{ form.description.label(class="form-label") }}
+                    <span class="text-danger">*</span>
+
+                    {{ form.description(
+                        class="form-control",
+                        rows="4",
+                        maxlength="2000",
+                        placeholder="Describe the pothole, its size, or any road safety concerns..."
+                    )}}
+
+                    {% for error in form.description.errors %}
+                        <div class="text-danger small mt-1">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.severity.label(class="form-label") }}
+                    <span class="text-danger">*</span>
+
+                    {{ form.severity(
+                        class="form-select"
+                    )}}
+
+                    {% for error in form.severity.errors %}
+                        <div class="text-danger small mt-1">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="mb-4">
+                    {{ form.photo.label(class="form-label") }}
+                    <span class="text-muted">(Optional)</span>
+
+                    {{ form.photo(
+                        class="form-control",
+                        accept="image/jpeg,image/png,image/webp"
+                    )}}
+
+                    <div class="form-text">
+                        Accepted formats: JPG, PNG, or WebP.
+                    </div>
+
+                    {% for error in form.photo.errors %}
+                        <div class="text-danger small mt-1">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="report-form-note mb-3">
+                    <span>ℹ️</span>
+                    <p>
+                        Please do not put yourself in danger to take a photo or mark a road location.
+                    </p>
+                </div>
+
+                {{ form.submit(
+                    class_="btn btn-primary btn-lg w-100",
+                    id="submit-report",
+                    disabled=True
+                ) }}
+
+                <p class="text-muted small mt-3 mb-0">
+                    No account is required. Your report will be saved for village staff to review.
+                </p>
+            </form>
+        </div>
+
+    </div>
+
+</section>
+{% endblock %}

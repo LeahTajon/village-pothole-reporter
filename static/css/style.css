@@ -1,0 +1,833 @@
+:root {
+    --primary: #5145cd;
+    --primary-dark: #4035ad;
+    --background: #f6f7fb;
+    --text: #202338;
+    --muted: #6b7280;
+    --border: #e7e9f1;
+}
+
+body {
+    margin: 0;
+    background: #fff;
+    color: var(--text);
+    font-family: Inter, "Segoe UI", Arial, sans-serif;
+}
+
+.navbar {
+    min-height: 76px;
+}
+
+.navbar-brand {
+    color: var(--text);
+    font-size: 1.1rem;
+}
+
+.brand-icon {
+    margin-right: 6px;
+}
+
+.btn-primary {
+    background: var(--primary);
+    border-color: var(--primary);
+    border-radius: 9px;
+    font-weight: 600;
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark);
+    border-color: var(--primary-dark);
+}
+
+.hero-section {
+    padding: 100px 0 90px;
+    background:
+        radial-gradient(
+            circle at 85% 15%,
+            #e7e5ff 0,
+            transparent 35%
+        ),
+        linear-gradient(135deg, #f8f8ff, #f1f3fb);
+}
+
+.hero-content {
+    max-width: 720px;
+}
+
+.hero-eyebrow,
+.section-eyebrow {
+    color: var(--primary);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+}
+
+.hero-content h1 {
+    margin: 20px 0;
+    font-size: clamp(2.7rem, 6vw, 4.5rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -2px;
+}
+
+.hero-content h1 span {
+    display: block;
+    color: var(--primary);
+}
+
+.hero-content > p {
+    max-width: 580px;
+    margin-bottom: 28px;
+    color: var(--muted);
+    font-size: 1.1rem;
+    line-height: 1.8;
+}
+
+.hero-note {
+    margin-top: 16px;
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.report-section {
+    padding: 80px 0;
+}
+
+.section-heading {
+    max-width: 650px;
+    margin: 0 auto 42px;
+    text-align: center;
+}
+
+.section-heading h2 {
+    margin: 14px 0;
+    font-size: clamp(1.8rem, 4vw, 24.5rem);
+    font-weight: 750;
+}
+
+.section-heading h2 {
+    margin: 14px 0;
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 750;
+}
+
+.section-heading p {
+    color: var(--muted);
+    line-height: 1.7;
+}
+
+.info-card-container {
+    margin-bottom: 20px;
+}
+
+.info-card {
+    height: 100%;
+    padding: 28px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: #fff;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.info-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgb(32 35 56 / 7%);
+}
+
+.info-icon {
+    margin-bottom: 18px;
+    font-size: 2rem;
+}
+
+.info-card h3 {
+    margin-bottom: 12px;
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+.info-card p {
+    margin-bottom: 0;
+    color: var(--muted);
+    line-height: 1.7;
+}
+
+.map-placeholder {
+    margin-top: 48px;
+    padding: 60px 24px;
+    border: 2px dashed #d7d8e8;
+    border-radius: 18px;
+    background: var(--background);
+    text-align: center;
+}
+
+.map-placeholder-icon {
+    margin-bottom: 16px;
+    font-size: 2.5rem;
+}
+
+.map-placeholder h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.map-placeholder p {
+    max-width: 500px;
+    margin: 12px auto 0;
+    color: var(--muted);
+    line-height: 1.7;
+}
+
+.site-footer {
+    padding: 25px 0;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+/* Interactive Map */
+.map-panel {
+    margin-top: 48px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 8px 30px rgb(32 35 56 / 5%);
+}
+
+.map-panel-header {
+    padding: 26px 28px 18px;
+}
+
+.map-panel-header h3 {
+    margin: 10px 0;
+    font-size: 1.35rem;
+    font-weight: 750;
+}
+
+.map-panel-header p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.6;
+}
+
+#pothole-map {
+    width: 100%;
+    height: 440px;
+    background: #edf0f5;
+    z-index: 1;
+}
+
+.location-details {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+    padding: 24px 28px;
+}
+
+.location-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.location-dot {
+    width: 9px;
+    height: 9px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: #aeb4c2;
+}
+
+.location-status.selected .location-dot {
+    background: #16a36a;
+}
+
+.coordinates {
+    display: flex;
+    gap: 28px;
+}
+
+.coordinates div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.coordinates span {
+    color: var(--muted);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+}
+
+.coordinates strong {
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+#confirm-location:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+
+/* Map layer selector */
+.leaflet-control-layers {
+    border: 1px solid #e7e9f1 !important;
+    border-radius: 10px !important;
+    box-shadow: 0 3px 12px rgb(32 35 56 / 12%) !important;
+    font-family: Inter, "Segoe UI", Arial, sans-serif;
+    font-size: 13px;
+}
+
+.leaflet-control-layers-expanded {
+    padding: 10px 12px;
+}
+
+.leaflet-control-layers label {
+    margin-bottom: 5px;
+}
+
+.leaflet-control-layers label:last-child {
+    margin-bottom: 0;
+}
+
+/* POTHOLE REPORT FORM */
+
+.report-form-panel {
+    background: #ffffff;
+    border: 1px solid #e8e8f2;
+    border-radius: 20px;
+    padding: 32px;
+    box-shadow: 0 8px 28px rgba(38, 35, 90, 0.06);
+}
+
+.report-form-header {
+    margin-bottom: 28px;
+}
+
+.report-form-header h3 {
+    color: #252344;
+    font-weight: 700;
+    margin: 10px 0;
+}
+
+.report-form-header p {
+    color: #77778c;
+    margin-bottom: 0;
+}
+
+.report-form-panel .form-label {
+    color: #33324d;
+    font-weight: 600;
+}
+
+.report-form-panel .form-control,
+.report-form-panel .form-select {
+    border: 1px solid #dedeee;
+    border-radius: 10px;
+    padding: 12px 14px;
+}
+
+.report-form-panel .form-control:focus,
+.report-form-panel .form-select:focus {
+    border-color: #7c5cff;
+    box-shadow: 0 0 0 3px rgba(124, 92, 255, 0.12);
+}
+
+.report-form-panel textarea {
+    resize: vertical;
+}
+
+.report-form-panel .btn-primary {
+    background-color: #7c5cff;
+    border-color: #7c5cff;
+    border-radius: 10px;
+    font-weight: 600;
+    padding: 13px 20px;
+}
+
+.report-form-panel .btn-primary:hover:not(:disabled) {
+    background-color: #6848ed;
+    border-color: #6848ed;
+}
+
+.report-form-panel .btn-primary:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+.report-form-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 14px 16px;
+    background: #f5f4ff;
+    border-radius: 10px;
+}
+
+.report-form-note p {
+    color: #55536f;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+
+/* ========================================
+   Public Navigation
+======================================== */
+
+.community-nav-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 14px !important;
+    border-radius: 10px;
+    color: #514a68;
+    font-size: 13px;
+    font-weight: 650;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.community-nav-link i {
+    font-size: 18px;
+}
+
+.community-nav-link:hover,
+.community-nav-link:focus {
+    background: #f3f0ff;
+    color: #6554c0;
+}
+
+.report-nav-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 11px 16px;
+    border: 1px solid #6554c0;
+    border-radius: 10px;
+    background: #6554c0;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.report-nav-button i {
+    font-size: 17px;
+}
+
+.report-nav-button:hover {
+    transform: translateY(-1px);
+    border-color: #5140a8;
+    background: #5140a8;
+    color: #ffffff;
+}
+
+/* Street Search */
+.street-search-panel {
+    padding: 20px 22px 14px;
+    margin-bottom: 16px;
+    background: #fff;
+    border: 1px solid #e8e7f3;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(38, 34, 80,  0.05);
+}
+
+.street-search-panel .form-label{
+    display: block;
+    margin-bottom: 10px;
+    color: #29264a;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.street-search-controls {
+    display: flex;
+    align-items: stretch;
+    gap: 12px;
+}
+
+.street-search-input-wrap {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+}
+
+.street-search-icon {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    z-index: 1;
+    color: #7c5cff;
+    font-size: 1.35rem;
+    line-height: 1;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.street-search-input-wrap .form-control,
+#street-search-input {
+    width: 100%;
+    min-height: 48px;
+    padding: 11px 15px 11px 42px;
+    border: 1px solid #dedcf0;
+    border-radius: 12px;
+    background: #fafaff;
+    color: #29264a;
+    font-size: 0.95rem;
+    box-shadow: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#street-search-input::placeholder {
+    color: #9693ab;
+}
+
+#street-search-input:focus {
+    border-color: #7c5cff;
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(124, 92, 255, 0.12);
+    outline: none;
+}
+
+#street-search-button {
+    min-width: 112px;
+    min-height: 48px;
+    padding: 10px 22px;
+    border: 1px solid #7c5cff;
+    border-radius: 12px;
+    background: #7c5cff;
+    color: #fff;
+    font-size: 0.95rem;
+    font-weight: 600;
+    box-shadow: 0 4px 10px rgba(124, 92, 255, 0.18);
+    transition: background 0.2s ease, transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+#street-search-button:hover:not(:disabled) {
+    background: #6746ed;
+    border-color: #6746ed;
+    box-shadow: 0 6px 14px rgba(124, 92, 255, 0.25);
+    transform: translateY(-1px);
+}
+
+#street-search-button:focus-visible {
+    outline: 3px solid rgba(124, 92, 255, 0.3);
+    outline-offset: 3px;
+}
+
+#street-search-button:disabled {
+    cursor: wait;
+    opacity: 0.7;
+}
+
+#street-search-help {
+    margin: 10px 0 0;
+    color: #77748e;
+    font-size: 0.83rem;
+    line-height: 1.5;
+}
+
+.street-search-message {
+    margin: 8px 0 0;
+    color: #5145cd;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.street-search-message:empty {
+    display: none;
+}
+
+
+/* Admin navigation styling */
+#publicNavbar a.admin-login-link,
+#publicNavbar a.admin-dashboard-link,
+#publicNavbar a.admin-logout-link {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 14px !important;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+/* Admin Login */
+#publicNavbar a.admin-login-link {
+    color: #6d4aff !important;
+    background-color: #f1edff;
+    border: 1px solid #e2d9ff;
+}
+
+#publicNavbar a.admin-login-link:hover {
+    color: #ffffff !important;
+    background-color: #6d4aff;
+}
+
+/* Admin Dashboard */
+#publicNavbar a.admin-dashboard-link {
+    color: #5b43c7 !important;
+    background-color: #f1edff;
+    border: 1px solid #e2d9ff;
+}
+
+#publicNavbar a.admin-dashboard-link:hover {
+    color: #ffffff !important;
+    background-color: #5b43c7;
+}
+
+/* Logout */
+#publicNavbar a.admin-logout-link {
+    color: #dc3545 !important;
+    background-color: #fff1f2;
+    border: 1px solid #fecdd3;
+}
+
+#publicNavbar a.admin-logout-link:hover {
+    color: #ffffff !important;
+    background-color: #dc3545;
+}
+
+/* Navigation icons */
+#publicNavbar a.admin-login-link i,
+#publicNavbar a.admin-dashboard-link i,
+#publicNavbar a.admin-logout-link i {
+    font-size: 18px;
+}
+
+
+/* ========================================
+   Navigation Spacing and Alignment Fix
+======================================== */
+
+/* Align all navigation items to the right with consistent gaps */
+#publicNavbar .navbar-nav {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 20px !important;
+    width: 100%;
+    
+}
+
+/* Give each navigation link comfortable spacing */
+#publicNavbar .navbar-nav > a {
+    margin: 0 !important;
+    flex-shrink: 0;
+}
+
+/* Consistent button height and spacing */
+#publicNavbar a.admin-login-link,
+#publicNavbar a.admin-dashboard-link,
+#publicNavbar a.admin-logout-link,
+#publicNavbar a.report-nav-button {
+    min-height: 42px;
+    padding: 10px 15px !important;
+    white-space: nowrap;
+}
+
+/* Keep the navigation links toward the right on desktop */
+@media (min-width: 992px) {
+    #publicNavbar {
+        justify-content: flex-end;
+    }
+
+    #publicNavbar .navbar-nav {
+        width: auto;
+        margin-left: auto;
+    }
+}
+
+/* Stack links neatly on mobile */
+@media (max-width: 991.98px) {
+    #publicNavbar .navbar-nav {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px !important;
+        padding: 16px 0;
+    }
+
+    #publicNavbar .navbar-nav > a {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Mobile navigation */
+@media (max-width: 991.98px) {
+    #publicNavbar a.admin-login-link,
+    #publicNavbar a.admin-dashboard-link,
+    #publicNavbar a.admin-logout-link {
+        display: flex !important;
+        width: 100%;
+        justify-content: center !important;
+        align-items: center;
+        text-align: center;
+        gap: 8px;
+        margin-top: 4px;
+    }
+}
+
+
+/* Mobile layout */
+@media (max-width: 576px) {
+    .street-search-panel {
+        padding: 16px;
+        margin-bottom: 12px;
+        border-radius: 14px;
+    }
+
+    .street-search-controls {
+        gap: 8px;
+    }
+
+    #street-search-input {
+        min-height: 46px;
+        padding-left: 12px;
+        font-size: 0.9rem;
+    }
+
+    .street-search-icon {
+        display: none;
+    }
+
+    #street-search-button {
+        min-width: 82px;
+        min-height: 46px;
+        padding: 10px 14px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .community-nav-link {
+        justify-content: flex-start;
+        margin-top: 10px;
+    }
+
+    .report-nav-button {
+        width: 100%;
+        margin: 8px 0 12px;
+    }
+}
+
+/* Responsive */
+
+@media (max-width: 576px) {
+    .report-form-panel {
+        padding: 22px 18px;
+        border-radius: 16px;
+    }
+}
+
+@media (max-width: 576px) {
+    .report-form-panel {
+        padding: 22px 18px;
+        border-radius: 16px;
+    }
+}
+
+@media (max-width: 768px) {
+    #pothole-map {
+        height: 350px;
+    }
+
+    .location-details {
+        align-items: stretch;
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    .coordinates {
+        justify-content: space-between;
+        gap: 12px;
+    }
+
+    .map-panel-header {
+        padding: 22px 20px 16px;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero-section {
+        padding: 70px 0;
+    }
+
+    .hero-content h1 {
+        letter-spacing: -1px;
+    }
+
+    .report-section {
+        padding: 55px 0;
+    }
+
+    .navbar-brand {
+        font-size: 0.95rem;
+    }
+}
+
+
+/* Force visible spacing between navigation items */
+#publicNavbar .navbar-nav {
+    display: flex !important;
+    gap: 14px !important;
+    column-gap: 14px !important;
+    row-gap: 10px !important;
+}
+
+/* Prevent individual navigation links from collapsing together */
+#publicNavbar .navbar-nav > a {
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+}
+
+/* Desktop: keep navigation items in one row */
+@media (min-width: 992px) {
+    #publicNavbar .navbar-nav {
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: flex-end !important;
+    }
+}
+
+/* Mobile: stack links with clear spacing */
+@media (max-width: 991.98px) {
+    #publicNavbar .navbar-nav {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 10px !important;
+    }
+
+    #publicNavbar .navbar-nav > a {
+        width: 100%;
+    }
+}
+
+/* Center admin navigation links on smaller screens */
+@media (max-width: 991.98px) {
+    .admin-login-link,
+    .admin-dashboard-link {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        width: 100%;
+        gap: 6px;
+    }
+}
+

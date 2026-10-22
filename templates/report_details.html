@@ -1,0 +1,348 @@
+{% extends "base.html" %}
+
+{% block title %}Report #{{ pothole.id }} | Village Pothole Reporter{% endblock %}
+
+{% block extra_css %}
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/report_details.css') }}"
+>
+
+<link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+>
+
+{% endblock %}
+
+{% block content %}
+<div class="report-details-page">
+
+    <!-- Back Navigation -->
+    <a href="{{ url_for('reports')}}" class="back-to-reports">
+        <i class="ti ti-arrow-left"></i>
+        Back to Reports
+    </a>
+
+    <!-- Page Header -->
+    <div class="details-page-header">
+        <div>
+            <p class="page-eyebrow">
+                <i class="ti ti-map-pin"></i>
+                Community Report
+            </p>
+
+            <h1>Pothole Report #{{ pothole.id }}</h1>
+
+            <p class="details-subtitle">
+                View the submitted pothole information and location.
+            </p>
+        </div>
+
+        <span class="severity-badge severity-{{ pothole.severity|lower }}">
+            <i class="ti ti-alert-triangle"></i>
+            {{ pothole.severity }} Severity
+        </span>
+    </div>
+
+    <!-- Report Details Layout -->
+    <div class="report-details-layout">
+
+        <!-- Left Column: Photo and Description -->
+        <div class="details-main-column">
+
+            <!-- Photo -->
+            <section class="details-card">
+                <div class="details-card-heading">
+                    <i class="ti ti-camera"></i>
+                    <h2>Pothole Photo</h2>
+                </div>
+
+                {% if pothole.photo %}
+                    <a 
+                        href="{{ url_for('static', filename='uploads/' ~ pothole.photo) }}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="details-photo-link">
+
+                        <img 
+                            src="{{ url_for('static', filename='uploads/' ~ pothole.photo)}}" 
+                            alt="Photo of pothole report #{{ pothole.id }}"
+                            class="details-photo"
+                        >
+                        <span class="photo-hint">
+                            <i class="ti ti-maximize"></i>
+                            Open full-size photo
+                        </span>
+                    </a>
+                {% else %}
+                    <div class="no-photo">
+                        <i class="ti ti-photo"></i>
+                        <p>No photo was uploaded for this report.</p>
+                    </div>
+                {% endif %}
+
+                <!-- Before and After Repair Photos -->
+                {% if pothole.photo or pothole.repair_photo %}
+                <div class="repair-comparison-section mt-4">
+
+                    <div class="repair-comparison-heading mb-3">
+                        <h2 class="h5 mb-1">Before &amp; After</h2>
+                        <p class="text-muted small mb-0">
+                            See the condition of the pothole before and after repair.
+                        </p>
+                    </div>
+
+                    <div class="row g-3">
+
+                        <!-- Before Photo -->
+                        {% if pothole.photo %}
+                        <div class="col-12 col-md-6">
+                            <div class="repair-photo-card h-100">
+                                <div class="repair-photo-label">
+                                    <i class="ti ti-alert-circle me-1"></i>
+                                    Before Repair 
+                                </div>
+
+                                <img 
+                                    src="{{ url_for('static', filename='uploads/' ~ pothole.photo) }}" 
+                                    alt="Pothole before repair"
+                                    class="repair-comparison-image"
+                                    loading="lazy">
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <!-- After Photo -->
+                        {% if pothole.repair_photo %}
+                        <div class="col-12 {% if pothole.photo %}col-md-6{% endif %}">
+                            <div class="repair-photo-card h-100">
+                                <div class="repair-photo-label repaired-label">
+                                    <i class="ti ti-circle-check me-1"></i>
+                                    After Repair 
+                                </div>
+
+                                <img 
+                                    src="{{ url_for('static', filename='uploads/' ~ pothole.repair_photo) }}" 
+                                    alt="Pothole after repair"
+                                    class="repair-comparison-image"
+                                    loading="lazy">
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    {% if pothole.repair_completed_at or pothole.repair_notes %}
+                    <div class="repair-completion-info mt-3">
+
+                        {% if pothole.repair_completed_at %}
+                        <p class="small text-muted mb-2">
+                            <i class="ti ti-calendar-check me-1"></i>
+                            <strong>Repair completed:</strong>
+                            {{ pothole.repair_completed_at.strftime("%b %d, %Y") }}
+                        </p>
+                        {% endif %}
+
+                        {% if pothole.repair_notes %}
+                        <p class="mb-0">
+                            <strong>Repair Notes:</strong>
+                            {{ pothole.repair_notes }}
+                        </p>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </section>
+
+            
+
+            <!-- Description -->
+            <section class="details-card">
+                <div class="details-card-heading">
+                    <i class="ti ti-file-description"></i>
+                    <h2>Report Description</h2>
+                </div>
+
+                <p class="full-description">
+                    {{ pothole.description }}
+                </p>
+            </section>
+        </div>
+
+        <!-- Right Column: Information -->
+        <aside class="details-sidebar">
+
+            <!-- Status -->
+            <section class="details-card">
+                <div class="details-card-heading">
+                    <i class="ti ti-clipboard-check"></i>
+                    <h2>Report Status</h2>
+                </div>
+
+                <span class="status-badge status-{{ pothole.status|lower|replace(' ', '-') }}">
+                    <span class="status-indicator"></span>
+                    {{ pothole.status }}
+                </span>
+
+                <p class="status-help">
+                    This shows the current status recorded for this report.
+                </p>
+            </section>
+
+            <!-- Report Information -->
+            <section class="details-card">
+                <div class="details-card-heading">
+                    <i class="ti ti-info-circle"></i>
+                    <h2>Report Information</h2>
+                </div>
+
+                <div class="detail-item">
+                    <span class="detail-label">Report ID</span>
+                    <strong>#{{ pothole.id }}</strong>
+                </div>
+
+                <div class="detail-item">
+                    <span class="detail-label">Severity</span>
+                    <strong>{{ pothole.severity }}</strong>
+                </div>
+
+                <div class="detail-item">
+                    <span class="detail-label">Date Submitted</span>
+                    <strong>
+                        {% if pothole.created_at_guam %}
+                            {{ pothole.created_at_guam.strftime("%b %d, %Y") }}
+                        {% else %}
+                            Date unavailable
+                        {% endif %}
+                    </strong>
+                </div>
+
+                <div class="detail-item">
+                    <span class="detail-label">Time Submitted</span>
+                    <strong>
+                        {% if pothole.created_at_guam %}
+                            {{ pothole.created_at_guam.strftime("%I:%M %p") }}
+                        {% else %}
+                            Time unavailable
+                        {% endif %}
+                    </strong>
+                </div>
+            </section>
+
+            <!-- Location -->
+            <section class="details-card">
+                <div class="details-card-heading">
+                    <i class="ti ti-map-pin"></i>
+                    <h2>Reported Location</h2>
+                </div>
+
+                <div class="coordinate-box">
+                    <span class="detail-label">Latitude</span>
+                    <strong>{{ "%.6f"|format(pothole.latitude) }}</strong>
+                </div>
+
+                <div class="coordinate-box">
+                    <span class="detail-label">Longitude</span>
+                    <strong>{{ "%.6f"|format(pothole.longitude) }}</strong>
+                </div>
+
+                <!-- Interactive Map -->
+                <div 
+                    id="report-detail-map"
+                    data-latitude="{{ pothole.latitude }}"
+                    data-longitude="{{ pothole.longitude }}"
+                    aria-label="Map showing the reported pothole location">
+                </div>
+
+                <a
+                    href="https://www.google.com/maps?q={{ pothole.latitude }},{{ pothole.longitude }}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="open-location-btn"
+                >
+                    <i class="ti ti-external-link"></i>
+                    Open in Google Maps
+                </a>
+            </section>
+        </aside>
+    </div>
+</div>
+
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const mapElement = document.getElementById("report-detail-map");
+
+    if (!mapElement || typeof L === "undefined") {
+        return;
+    }
+
+    const latitude = Number(mapElement.dataset.latitude);
+    const longitude = Number(mapElement.dataset.longitude);
+
+    if (
+        !Number.isFinite(latitude) ||
+        !Number.isFinite(longitude) ||
+        latitude < -90 ||
+        latitude > 90 ||
+        longitude < -180 ||
+        longitude > 180
+    ) {
+        mapElement.textContent = "Location coordinates are unavailable.";
+        return;
+    }
+
+    // Initialize map
+    const map = L.map(mapElement).setView(
+        [latitude, longitude],
+        17
+    );
+
+    // Standard street map
+    const streetLayer = L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {
+            attribution:
+                '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            maxZoom: 19
+        }
+    );
+
+    // Satellite imagery from Esri World Imagery
+    const satelliteLayer = L.tileLayer(
+        "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+        {
+            attribution:
+                'Imagery &copy; <a href="https://www.esri.com/">Esri</a> and its imagery providers',
+            maxZoom: 19
+        }
+    );
+
+    // Start with the street map
+    streetLayer.addTo(map);
+
+    // Pothole marker
+    L.marker([latitude, longitude])
+        .addTo(map)
+        .bindPopup("Reported pothole location")
+        .openPopup();
+
+    // Layer switcher
+    L.control.layers(
+        {
+            "Street View": streetLayer,
+            "Satellite View": satelliteLayer
+        },
+        null,
+        {
+            collapsed: false
+        }
+    ).addTo(map);
+});
+</script>
+
+
+{% endblock %}
