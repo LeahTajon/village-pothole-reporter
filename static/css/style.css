@@ -641,6 +641,172 @@ body {
     white-space: nowrap;
 }
 
+
+/* ========================================
+   PUBLIC DEMO DASHBOARD
+======================================== */
+
+.demo-dashboard-section {
+    margin: 48px 0;
+}
+
+.demo-dashboard-card {
+    display: grid;
+    grid-template-columns: 1.4fr 0.8fr;
+    gap: 32px;
+    align-items: center;
+    padding: 36px;
+    background: #f4f5fb;
+    border: 1px solid #e4e6f1;
+    border-radius: 20px;
+}
+
+.demo-dashboard-content h2 {
+    margin: 10px 0 12px;
+    color: #25283b;
+    font-size: clamp(1.6rem, 3vw, 2.1rem);
+    font-weight: 700;
+}
+
+.demo-dashboard-description {
+    max-width: 620px;
+    margin-bottom: 24px;
+    color: #62677a;
+    line-height: 1.7;
+}
+
+.demo-credentials {
+    margin-bottom: 18px;
+    padding: 4px 16px;
+    background: #ffffff;
+    border: 1px solid #e4e6f1;
+    border-radius: 12px;
+}
+
+.demo-credential-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 14px 0;
+}
+
+.demo-credential-row + .demo-credential-row {
+    border-top: 1px solid #ececf3;
+}
+
+.demo-credential-row > span {
+    color: #73778a;
+    font-size: 0.9rem;
+}
+
+.demo-credential-value {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    overflow-wrap: anywhere;
+}
+
+.demo-credential-value strong {
+    color: #303348;
+    font-size: 0.95rem;
+}
+
+.demo-copy-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 9px;
+    color: #6650d9;
+    background: #f0edff;
+    border: 0;
+    border-radius: 7px;
+    font-size: 0.85rem;
+}
+
+.demo-copy-button:hover {
+    background: #e5dfff;
+}
+
+.demo-access-warning {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 22px;
+    padding: 13px 15px;
+    color: #755b20;
+    background: #fff8e8;
+    border-radius: 10px;
+}
+
+.demo-access-warning i {
+    margin-top: 3px;
+    font-size: 1.15rem;
+}
+
+.demo-access-warning p {
+    margin: 0;
+    font-size: 0.88rem;
+    line-height: 1.6;
+}
+
+.demo-dashboard-button {
+    padding: 12px 20px;
+    border-radius: 10px;
+}
+
+.demo-dashboard-visual {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    min-height: 240px;
+    padding: 28px;
+    color: #ffffff;
+    background: linear-gradient(145deg, #7c5cff, #5540bd);
+    border-radius: 16px;
+}
+
+.demo-dashboard-visual > i {
+    margin-bottom: 24px;
+    font-size: 3.5rem;
+}
+
+.demo-dashboard-visual > span {
+    margin-bottom: 10px;
+    font-size: 0.75rem;
+    letter-spacing: 1.5px;
+    opacity: 0.8;
+}
+
+.demo-dashboard-visual > strong {
+    font-size: 1.5rem;
+    line-height: 1.4;
+}
+
+@media (max-width: 767px) {
+    .demo-dashboard-section {
+        margin: 32px 0;
+    }
+
+    .demo-dashboard-card {
+        grid-template-columns: 1fr;
+        gap: 24px;
+        padding: 22px;
+    }
+
+    .demo-dashboard-visual {
+        min-height: 180px;
+    }
+
+    .demo-credential-row {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
+
 /* Keep the navigation links toward the right on desktop */
 @media (min-width: 992px) {
     #publicNavbar {

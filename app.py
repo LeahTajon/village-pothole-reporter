@@ -621,7 +621,8 @@ def index():
     form = PotholeReportForm()
     return render_template(
         "index.html",
-        form=form
+        form=form,
+        demo_password=os.getenv("ADMIN_PASSWORD", "")
     )
 
 # Submit Report Form
